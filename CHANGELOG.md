@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-31
+
+### Added
+
+- `android-gradle-ci` accepts `pre_command`, `post_command`, and an optional
+  `command_token` secret exported as `GUARDRAILS_READ_TOKEN`.
+
 ## [1.0.0] - 2026-10-31
 
 ### Added

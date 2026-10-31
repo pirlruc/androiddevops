@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.0.0** is the first reusable release. |
+| **Branch** | `main`. Tag **1.0.0** is the first reusable release. Tag **1.0.1** adds `pre_command` and `post_command`. Do not move `1.0.0`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins

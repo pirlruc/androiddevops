@@ -38,11 +38,26 @@ on:
         required: false
         type: string
         default: android-debug-apk
+      pre_command:
+        description: Shell command run after checkout and before Gradle. Empty skips.
+        required: false
+        type: string
+        default: ""
+      post_command:
+        description: Shell command run after Gradle. Empty skips.
+        required: false
+        type: string
+        default: ""
     secrets:
       checkout_token:
         description: >-
           contents:read on androiddevops when that repo is private. Public
           callers pass github.token.
+        required: false
+      command_token:
+        description: >-
+          Optional token exported as GUARDRAILS_READ_TOKEN for pre_command.
+          Empty leaves the variable unset.
         required: false
 
 permissions: {}
@@ -97,6 +112,13 @@ jobs:
 
       - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
 
+      - name: Pre-command
+        if: inputs.pre_command != ''
+        env:
+          PRE_COMMAND: ${{ inputs.pre_command }}
+          GUARDRAILS_READ_TOKEN: ${{ secrets.command_token }}
+        run: bash -c "${PRE_COMMAND}"
+
       - name: Gradle
         env:
           GRADLE_TASKS: ${{ inputs.gradle_tasks }}
@@ -104,6 +126,12 @@ jobs:
           set -euo pipefail
           # shellcheck disable=SC2086
           ./gradlew --no-daemon ${GRADLE_TASKS}
+
+      - name: Post-command
+        if: inputs.post_command != ''
+        env:
+          POST_COMMAND: ${{ inputs.post_command }}
+        run: bash -c "${POST_COMMAND}"
 
       - name: Upload APK
         if: inputs.upload_apk

@@ -11,7 +11,9 @@ Copy the workflow file at the pinned tag into the caller instead.
 
 One JDK 17 (override with `java_version`), Android SDK, optional wrapper
 validation, and one `./gradlew` invocation (`gradle_tasks`). Set `upload_apk`
-to upload `apk_path` as `artifact_name` for one day.
+to upload `apk_path` as `artifact_name` for one day. `pre_command` runs after
+checkout. `post_command` runs after Gradle. `command_token` is exported as
+`GUARDRAILS_READ_TOKEN` for the pre-command.
 
 ## `android-codeql.yml`
 
