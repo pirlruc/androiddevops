@@ -1,0 +1,79 @@
+# Authored backlog for androiddevops.
+#
+# Schema: https://github.com/pirlruc/github-scaffold/blob/main/docs/issues-schema.md
+# Methodology: https://github.com/pirlruc/methodologies/tree/1.9.2/github-issue-adr
+
+milestones:
+  - name: Phase 1 — Foundation
+    status: open
+    epics:
+      - id: AND-001
+        status: done
+        title: Reusable Android Gradle workflows
+        overview:
+          problem: >-
+            heimdall, finsilo, and mat-aventuras each inline JDK, SDK, CodeQL,
+            MobSF, the APK bill, and the emulator.
+          goal: >-
+            One SHA-pinned workflow per job, with scripts_ref and an optional
+            token so a private caller still works.
+        decision: >-
+          In the context of three Android repositories, facing copied Gradle
+          CI, we decided to publish reusable workflows from androiddevops, to
+          achieve one place to pin actions and hash installs, accepting that a
+          public caller cannot use this repo after it becomes private.
+        acceptance_criteria:
+          - Callers pin a full commit SHA and pass the same value as scripts_ref
+          - MobSF installs from a hash-locked requirements file
+          - The release APK job uploads an artifact another job can attach
+        guardrail_refs:
+          - CI-018
+          - CI-001
+          - ANDROID-BUILD-001
+        tasks:
+          - id: AND-001-T1
+            status: done
+            title: Publish gradle, CodeQL, MobSF, SBOM, emulator, and release workflows
+            instructions:
+              files:
+                - .github/workflows/
+                - scripts/
+            verification:
+              - actionlint .github/workflows/android-gradle-ci.yml
+            guardrail_refs:
+              - CI-018
+
+      - id: AND-002
+        status: open
+        title: Callers other than mat-aventuras adopt the reusable workflows
+        overview:
+          problem: >-
+            finsilo and heimdall still inline Android CI. They will drift from
+            the pins in this repo.
+          goal: >-
+            Each of those repos calls androiddevops for the jobs it already runs.
+        decision: >-
+          In the context of the existing Android apps, facing inline CI that
+          this repo now replaces, we decided to track adoption as tasks here, to
+          achieve one migration per caller, accepting that heimdall is private
+          and can call this repo after it goes private while finsilo cannot.
+        acceptance_criteria:
+          - finsilo calls the reusables while androiddevops is public, or vendors them
+          - heimdall calls the reusables with checkout_token
+        tasks:
+          - id: AND-002-T1
+            status: open
+            title: Point finsilo Android jobs at androiddevops
+            instructions:
+              files:
+                - .github/workflows/
+            verification:
+              - finsilo calls pirlruc/androiddevops android-gradle-ci.yml at a commit SHA
+          - id: AND-002-T2
+            status: open
+            title: Point heimdall Android jobs at androiddevops
+            instructions:
+              files:
+                - .github/workflows/
+            verification:
+              - heimdall calls pirlruc/androiddevops android-gradle-ci.yml at a commit SHA

@@ -1,0 +1,115 @@
+# One Gradle invocation for an Android caller. The caller repo is checked out.
+# scripts_ref must be the same full SHA as the uses: pin (CI-018).
+name: Android Gradle CI (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      scripts_ref:
+        description: Full commit SHA of androiddevops. Must match the uses pin.
+        required: true
+        type: string
+      java_version:
+        description: Temurin JDK major version
+        required: false
+        type: string
+        default: "17"
+      gradle_tasks:
+        description: Space-separated Gradle tasks
+        required: true
+        type: string
+      validate_wrapper:
+        description: Run gradle/actions/wrapper-validation before Gradle
+        required: false
+        type: boolean
+        default: true
+      upload_apk:
+        description: Upload apk_path from this run when the file exists
+        required: false
+        type: boolean
+        default: false
+      apk_path:
+        description: APK path relative to the caller repo, used when upload_apk is true
+        required: false
+        type: string
+        default: app/build/outputs/apk/debug/app-debug.apk
+      artifact_name:
+        description: Artifact name for the uploaded APK
+        required: false
+        type: string
+        default: android-debug-apk
+    secrets:
+      checkout_token:
+        description: >-
+          contents:read on androiddevops when that repo is private. Public
+          callers pass github.token.
+        required: false
+
+permissions: {}
+
+jobs:
+  gradle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Require a full scripts_ref SHA
+        env:
+          REF: ${{ inputs.scripts_ref }}
+        run: |
+          set -euo pipefail
+          case "${REF}" in
+            *[!0-9a-fA-F]*)
+              echo "::error::scripts_ref must be a 40-character commit SHA"
+              exit 1
+              ;;
+          esac
+          if [[ ${#REF} -ne 40 ]]; then
+            echo "::error::scripts_ref must be a 40-character commit SHA"
+            exit 1
+          fi
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/androiddevops
+          ref: ${{ inputs.scripts_ref }}
+          token: ${{ secrets.checkout_token }}
+          persist-credentials: false
+          path: .androiddevops
+          sparse-checkout: |
+            README.md
+          sparse-checkout-cone-mode: false
+
+      - name: Gradle wrapper validation
+        if: inputs.validate_wrapper
+        uses: gradle/actions/wrapper-validation@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java_version }}
+          cache: gradle
+
+      - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+
+      - name: Gradle
+        env:
+          GRADLE_TASKS: ${{ inputs.gradle_tasks }}
+        run: |
+          set -euo pipefail
+          # shellcheck disable=SC2086
+          ./gradlew --no-daemon ${GRADLE_TASKS}
+
+      - name: Upload APK
+        if: inputs.upload_apk
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.apk_path }}
+          if-no-files-found: error
+          retention-days: 1
