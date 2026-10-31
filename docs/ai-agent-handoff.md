@@ -56,4 +56,4 @@ shellcheck scripts/*.sh
 python3 .github/scaffold/scripts/issues-sync.py --yaml docs/issues.yml --validate-only
 ```
 
-*Last updated: 2026-10-31 (reusable workflows, tag 1.0.0)*
+*Last updated: 2026-10-31 (1.0.2 falls back to github.token when checkout_token is empty)*

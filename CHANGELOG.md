@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-10-31
+
+### Fixed
+
+- A caller that omits `checkout_token` no longer passes an empty token into
+  `actions/checkout`, which rejects it. The job falls back to `github.token`.
+
 ## [1.0.1] - 2026-10-31
 
 ### Added
