@@ -1,0 +1,81 @@
+# mobsfscan with a hash-pinned install (Scorecard Pinned-Dependencies).
+name: Android MobSF (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      scripts_ref:
+        description: Full commit SHA of androiddevops. Must match the uses pin.
+        required: true
+        type: string
+      python_version:
+        description: Python version used to install mobsfscan
+        required: false
+        type: string
+        default: "3.12"
+      source_paths:
+        description: Space-separated source directories to scan
+        required: false
+        type: string
+        default: app/src/main domain/src/main data/src/main
+      min_severity:
+        description: Fail the job at this SARIF rank or above
+        required: false
+        type: string
+        default: high
+    secrets:
+      checkout_token:
+        description: contents:read on androiddevops when that repo is private
+        required: false
+
+permissions: {}
+
+jobs:
+  mobsf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/androiddevops
+          ref: ${{ inputs.scripts_ref }}
+          token: ${{ secrets.checkout_token }}
+          persist-credentials: false
+          path: .androiddevops
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ inputs.python_version }}
+
+      - name: Install mobsfscan from the hash lock
+        run: |
+          set -euo pipefail
+          python3 -m venv .ci-venv
+          .ci-venv/bin/pip install --require-hashes \
+            -r .androiddevops/scripts/requirements-mobsfscan.txt
+
+      - name: MobSF source scan
+        env:
+          SOURCE_PATHS: ${{ inputs.source_paths }}
+          MIN_SEVERITY: ${{ inputs.min_severity }}
+        run: |
+          set -euo pipefail
+          # shellcheck disable=SC2086
+          .ci-venv/bin/mobsfscan \
+            --type android \
+            --sarif \
+            -o mobsf.sarif \
+            --no-fail \
+            ${SOURCE_PATHS}
+          python3 .androiddevops/scripts/fail-on-sarif-severity.py \
+            --min-severity "${MIN_SEVERITY}" \
+            mobsf.sarif

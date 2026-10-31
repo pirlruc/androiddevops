@@ -1,0 +1,68 @@
+# This repo's CI. Android jobs live in the reusable workflows and run in callers.
+name: DevOps CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: devops-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  pins:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Submodule pins
+        run: sh scripts/check-submodule-pins.sh
+
+  infra-lint:
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    permissions:
+      contents: read
+      packages: read
+    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    with:
+      blocking: true
+      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+      container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
+    secrets:
+      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
+
+  docs:
+    permissions:
+      contents: read
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    with:
+      blocking: true
+      shell_scripts: scripts/*.sh
+      ruff_paths: scripts/gradle-to-cyclonedx.py scripts/fail-on-sarif-severity.py
+      yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
+      yaml_globs: .github/workflows/*.yml
+      run_link_lint: true
+      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    secrets:
+      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
+
+  scaffold:
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    permissions:
+      contents: read
+      issues: read
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    with:
+      blocking: true
+      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    secrets:
+      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}

@@ -1,0 +1,86 @@
+# Runtime-classpath CycloneDX plus osv-scanner (SC-SBOM-001 / SC-SBOM-002).
+# Dex has no Maven coordinates, so the bill comes from gradle dependencies.
+name: Android APK SBOM (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      scripts_ref:
+        description: Full commit SHA of androiddevops. Must match the uses pin.
+        required: true
+        type: string
+      java_version:
+        description: Temurin JDK major version
+        required: false
+        type: string
+        default: "17"
+      assemble_task:
+        description: Gradle task that produces the APK
+        required: false
+        type: string
+        default: :app:assembleDebug
+      apk_path:
+        description: APK path relative to the caller repo
+        required: false
+        type: string
+        default: app/build/outputs/apk/debug/app-debug.apk
+      gradle_configuration:
+        description: Configuration passed to gradle dependencies
+        required: false
+        type: string
+        default: debugRuntimeClasspath
+    secrets:
+      checkout_token:
+        description: contents:read on androiddevops when that repo is private
+        required: false
+
+permissions: {}
+
+jobs:
+  sbom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/androiddevops
+          ref: ${{ inputs.scripts_ref }}
+          token: ${{ secrets.checkout_token }}
+          persist-credentials: false
+          path: .androiddevops
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java_version }}
+          cache: gradle
+
+      - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+
+      - name: Assemble the APK
+        env:
+          ASSEMBLE_TASK: ${{ inputs.assemble_task }}
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon "${ASSEMBLE_TASK}"
+
+      - name: CycloneDX and OSV
+        env:
+          APK_PATH: ${{ inputs.apk_path }}
+          GRADLE_CONFIGURATION: ${{ inputs.gradle_configuration }}
+        run: |
+          set -euo pipefail
+          export DEPS_FILE="${RUNNER_TEMP}/runtime-classpath.txt"
+          ./gradlew --no-daemon :app:dependencies \
+            --configuration "${GRADLE_CONFIGURATION}" \
+            --console=plain > "${DEPS_FILE}"
+          bash .androiddevops/scripts/run-osv-sbom.sh "${APK_PATH}"
