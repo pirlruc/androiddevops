@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-01
+
+### Added
+
+- `android-release-apk` writes a CycloneDX bill of `releaseRuntimeClasspath`
+  and uploads `app-release.cdx.json` beside the APK. `sbom: false` skips it.
+  High and critical OSV findings fail the job.
+- `android-emulator` disables animations, waits for `sys.boot_completed`, and
+  retries the run once. `boot_timeout_seconds`, `pre_emulator_script`, and
+  `retry_count` are inputs.
+
 ## [1.0.2] - 2026-10-31
 
 ### Fixed

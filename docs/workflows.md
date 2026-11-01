@@ -34,12 +34,18 @@ runs osv-scanner 2.6.0 pinned by SHA-256. High and critical findings fail.
 ## `android-emulator.yml`
 
 `ReactiveCircus/android-emulator-runner` with `api_level`, `target`, `arch`,
-and `script`. Keep this off pull requests.
+and `script`. Animations are off. The script waits for `adb` and
+`sys.boot_completed` up to `boot_timeout_seconds` (default 600). One retry
+runs when `retry_count` is `1`. `pre_emulator_script` runs before the emulator
+process starts. Keep this off pull requests.
 
 ## `android-release-apk.yml`
 
 Runs `gradle_task` (default `:app:assembleRelease`) and uploads
-`android-release-apk`. Pass that artifact name to
+`android-release-apk`. When `sbom` is true (the default) the artifact also
+contains `sbom_name` (default `app-release.cdx.json`) from
+`gradle_configuration` (default `releaseRuntimeClasspath`). Pass that artifact
+name to
 [common-release](https://github.com/pirlruc/commondevops/blob/5.7.0/.github/workflows/common-release.yml)
 `release_artifact` from a later job in the same run. common-release writes the
 `.sha256` files.
