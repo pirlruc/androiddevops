@@ -32,10 +32,11 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
     with:
       blocking: true
-      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+      run_shfmt: true
+      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
     secrets:
       checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
@@ -43,15 +44,17 @@ jobs:
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
     with:
       blocking: true
       shell_scripts: scripts/*.sh
-      ruff_paths: scripts/gradle-to-cyclonedx.py scripts/fail-on-sarif-severity.py
+      ruff_paths: >-
+        scripts/gradle-to-cyclonedx.py scripts/fail-on-sarif-severity.py
+        scripts/validate-yaml.py scripts/lint-doc-links.py scripts/tests
       yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
-      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
     secrets:
       checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
@@ -60,9 +63,48 @@ jobs:
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
     with:
       blocking: true
-      scripts_ref: 01d993bc72eebc8806ae85f9459c4f3d6dd3415e
+      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
     secrets:
       checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
+
+  actionlint:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Token-free actionlint and zizmor
+        run: |
+          set -euo pipefail
+          curl -sSfL -o /tmp/actionlint.tgz \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tgz" | sha256sum -c
+          tar -xzf /tmp/actionlint.tgz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/*.yml
+          python3 -m pip install --user zizmor==1.31.1
+          python3 -m zizmor --min-severity=low .github/workflows
+
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Script unit tests
+        run: |
+          set -euo pipefail
+          python3 -m pip install pytest==9.2.0
+          python3 -m pytest scripts/tests -q

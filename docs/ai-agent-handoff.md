@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.1.1** lets `android-release-apk` select a GitHub Environment. Do not move `1.0.0`, `1.0.1`, `1.0.2`, or `1.1.0`. |
+| **Branch** | `main`. Tag **1.2.0** fails closed without a keystore and fixes the emulator boot. Do not move `1.0.0`, `1.0.1`, `1.0.2`, `1.1.0`, or `1.1.1`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
@@ -14,7 +14,7 @@
 | --- | --- |
 | guardrails | tag **1.13.1** → `1945211ac851c3c0f83694bd4ea53571fdced4ab` |
 | github-scaffold | tag **1.10.2** → `c8eddcfb2c8a808981e640fa9739cb4fcefa991e` |
-| commondevops | tag **5.7.0** → `01d993bc72eebc8806ae85f9459c4f3d6dd3415e` |
+| commondevops | tag **5.8.0** → `cb34967f230a0d4841ae1efc2c98e745bd8726a7` |
 | ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
 
@@ -23,7 +23,8 @@
 | Epic | Status |
 | --- | --- |
 | AND-001 reusable workflows | done on the 1.0.0 branch |
-| AND-002 finsilo and heimdall adoption | open. Do not edit those repos from here. |
+| AND-002 finsilo and heimdall adoption | open. Pin callers at 1.2.0. Do not edit those repos from here. finsilo is public. heimdall is private. |
+| AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
 
 ## Private later
 
@@ -39,8 +40,10 @@ today and has the same limit once it is private. Pass
 `COMMONDEVOPS_READ_TOKEN` when that happens. `github.token` is the fallback
 while commondevops is public.
 
-`docs/guardrail-deviations.yml` records CI-032, SC-SIGN-001, and REL-PUB-004
-for the Free private plan. None of them lower a number. Dependabot
+`docs/guardrail-deviations.yml` records CI-032 and SC-SIGN-001. The repo is
+public, so the old Free-plan rationale is gone. REL-PUB-004 is retired:
+callers pass `environment` and this repo has no publish token. None of the
+remaining entries lower a number. Dependabot
 `registries: github-private` stays commented until `DEPENDABOT_GITHUB_TOKEN`
 exists as a Dependabot secret.
 
@@ -50,10 +53,11 @@ Own CI pulls `ci-lint` only.
 ## Commands
 
 ```bash
-sh scripts/check-submodule-pins.sh
-actionlint .github/workflows/*.yml
-shellcheck scripts/*.sh
-python3 .github/scaffold/scripts/issues-sync.py --yaml docs/issues.yml --validate-only
+bash scripts/check-ci-local.sh
 ```
 
-*Last updated: 2026-11-02 (1.1.1 release-apk environment input).*
+The mobsfscan lock is `scripts/requirements-mobsfscan.txt`, compiled from
+`scripts/requirements-mobsfscan.in` with `scripts/mobsfscan-overrides.txt`.
+The command is the lock header. Do not hand-edit the lock.
+
+*Last updated: 2026-11-02 (1.2.0 fail-closed signing and emulator boot).*

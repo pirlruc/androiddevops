@@ -54,6 +54,10 @@ updates:
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+  - package-ecosystem: pip
+    directory: /scripts
+    patterns: ["*"]
+    multi-ecosystem-group: all-dependencies
   # Dependabot has no pre-commit ecosystem. Update .pre-commit-config.yaml
   # with the hook tool, not a package-ecosystem entry.
   # - package-ecosystem: pre-commit

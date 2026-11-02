@@ -1,0 +1,4 @@
+# Top-level scanner. Transitive pins that block patched releases are overridden
+# in scripts/mobsfscan-overrides.txt. Regenerate scripts/requirements-mobsfscan.txt
+# with the command in that lock's header.
+mobsfscan==1.1.0

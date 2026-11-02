@@ -8,28 +8,20 @@
 
 deviations:
   - id: CI-032
-    epic: AND-001
+    epic: AND-003
     why: >-
-      The repository is public today, so a default-branch ruleset can require
-      status checks. It returns to private on the Free plan, where rulesets
-      cannot be enforced. Callers pin this repo by commit SHA (CI-018). The
-      ruleset, once added, is the public-window control and is not the
-      private-repo control.
+      The repository is public, so a ruleset can require status checks.
+      Setting that ruleset is repository administration and is not part of
+      a workflow change. Callers pin a full commit SHA (CI-018). The earlier
+      Free-plan rationale does not apply while the repo stays public.
     owner: pirlruc
     review: 2026-12-31
   - id: SC-SIGN-001
-    epic: AND-001
+    epic: AND-003
     why: >-
-      This repo publishes workflow files, not images or packages. Keyless
-      signing of a GitHub Release stays off. The repository returns to private
-      on the Free plan, where keyless signing stops.
-    owner: pirlruc
-    review: 2026-12-31
-  - id: REL-PUB-004
-    epic: AND-001
-    why: >-
-      GitHub Environments restricted to tag refs are not available on a
-      private Free-plan user repository. There is no publish token to put in
-      an environment.
+      This repo publishes workflow files, not an image or a package. A GitHub
+      Release of this repo has no binary artifact to sign. Caller APKs are
+      signed with the caller keystore in android-release-apk, and keyless
+      signing of those files is the caller common-release job.
     owner: pirlruc
     review: 2026-12-31
