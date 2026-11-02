@@ -16,6 +16,27 @@ from pathlib import Path
 
 COORD = re.compile(r"([A-Za-z0-9_.\-]+):([A-Za-z0-9_.\-]+):([A-Za-z0-9_.+\-]+)")
 ARROW = re.compile(r"->\s+([A-Za-z0-9_.+\-]+)")
+STRICT = re.compile(
+    r"([A-Za-z0-9_.\-]+):([A-Za-z0-9_.\-]+):\{strictly\s+([A-Za-z0-9_.+\-]+)\}"
+)
+
+
+def _coordinate(payload: str) -> tuple[str, str, str] | None:
+    """Return group, name, and version from one dependency line payload."""
+    strict = STRICT.search(payload)
+    if strict is not None:
+        group, name, version = strict.group(1), strict.group(2), strict.group(3)
+    else:
+        match = COORD.match(payload)
+        if match is None:
+            return None
+        group, name, version = match.group(1), match.group(2), match.group(3)
+    arrow = ARROW.search(payload)
+    if arrow is not None:
+        version = arrow.group(1)
+    if version.startswith("{") or "(" in version:
+        return None
+    return group, name, version
 
 
 def parse_dependencies(text: str) -> list[tuple[str, str, str]]:
@@ -27,13 +48,10 @@ def parse_dependencies(text: str) -> list[tuple[str, str, str]]:
         payload = line.split("---", 1)[1].strip()
         if payload.startswith("project "):
             continue
-        match = COORD.match(payload)
-        if match is None:
+        parsed = _coordinate(payload)
+        if parsed is None:
             continue
-        group, name, version = match.group(1), match.group(2), match.group(3)
-        arrow = ARROW.search(payload)
-        if arrow is not None:
-            version = arrow.group(1)
+        group, name, version = parsed
         resolved[(group, name)] = version
     return sorted((group, name, version) for (group, name), version in resolved.items())
 

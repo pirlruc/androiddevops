@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-02
+
+### Changed
+
+- `android-release-apk` fails when the keystore secrets are empty.
+  `allow_unsigned: true` is the explicit unsigned build. Passwords are
+  a temporary `gradle.properties` that the step restores, and the keystore
+  file is removed when the step exits. Dotted `ORG_GRADLE_PROJECT_*` names
+  never reach the Gradle JVM. A signed build must produce `app-release.apk`.
+  The release job does not restore the Gradle cache.
+- `android-emulator` enables KVM and runs the boot wait from
+  `scripts/emulator-run.sh`, so the caller command is not inlined into the
+  runner script. `boot_timeout_seconds` must be digits and `retry_count`
+  must be `0` or `1`.
+- The mobsfscan lock overrides semgrep, mcp, PyJWT, and opentelemetry-api
+  onto patched releases. The install uses `--no-deps` because a resolver
+  rejects those overrides. Dependabot covers `scripts/` as pip.
+- `android-apk-sbom` and `android-mobsf` reject a `scripts_ref` that is not
+  a full commit SHA. CodeQL uploads SARIF from a job that only writes
+  security events.
+- DevOps CI calls commondevops 5.8.0, runs shfmt, and lints every script.
+  Dependabot pull requests run actionlint without the private lint image.
+
 ## [1.1.1] - 2026-11-02
 
 ### Fixed

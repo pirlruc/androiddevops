@@ -56,10 +56,11 @@ milestones:
           In the context of the existing Android apps, facing inline CI that
           this repo now replaces, we decided to track adoption as tasks here, to
           achieve one migration per caller, accepting that heimdall is private
-          and can call this repo after it goes private while finsilo cannot.
+          and can call this repo while it stays public, and finsilo is public so
+          it can call this repo only while androiddevops stays public.
         acceptance_criteria:
-          - finsilo calls the reusables while androiddevops is public, or vendors them
-          - heimdall calls the reusables with checkout_token
+          - finsilo calls the reusables at tag 1.2.0 while androiddevops is public, or vendors them
+          - heimdall calls the reusables at tag 1.2.0 with checkout_token
         tasks:
           - id: AND-002-T1
             status: open
@@ -77,3 +78,100 @@ milestones:
                 - .github/workflows/
             verification:
               - heimdall calls pirlruc/androiddevops android-gradle-ci.yml at a commit SHA
+
+      - id: AND-003
+        status: done
+        title: Fail closed and harden the reusable workflows
+        overview:
+          problem: >-
+            A release with empty keystore secrets uploaded an unsigned APK.
+            The emulator job disabled KVM and passed a multi-line script that
+            android-emulator-runner cannot run. The mobsfscan lock pinned
+            vulnerable transitive packages.
+          goal: >-
+            Signing fails closed, the emulator can boot on a GitHub runner,
+            and the scanner lock takes the patched releases.
+        decision: >-
+          In the context of the reusable Android workflows, facing an unsigned
+          release and an emulator job that never reached the tests, we decided
+          to fail closed without a keystore and to run the boot wait from a
+          bash file after enabling KVM, to achieve a signed artifact and a
+          job that can finish, accepting a 1.2.0 minor bump because the only
+          caller already signs and an explicit allow_unsigned input keeps the
+          unsigned path.
+        acceptance_criteria:
+          - An empty keystore fails android-release-apk unless allow_unsigned is true
+          - The emulator script is one bash invocation and the runner enables KVM
+          - The mobsfscan lock overrides mcp, pyjwt, and opentelemetry-api onto patched releases
+        guardrail_refs:
+          - CI-025
+          - CI-008
+          - CI-042
+          - SC-DEP-001
+        tasks:
+          - id: AND-003-T1
+            status: done
+            title: Fail closed when the release keystore is missing
+            instructions:
+              files:
+                - .github/workflows/android-release-apk.yml
+            verification:
+              - An empty keystore fails the assemble step unless allow_unsigned is true
+            guardrail_refs:
+              - CI-038
+          - id: AND-003-T2
+            status: done
+            title: Enable KVM and run the emulator script from a file
+            instructions:
+              files:
+                - .github/workflows/android-emulator.yml
+                - scripts/emulator-run.sh
+            verification:
+              - The runner script is a single bash invocation
+          - id: AND-003-T3
+            status: done
+            title: Regenerate the mobsfscan lock and cover it with Dependabot
+            instructions:
+              files:
+                - scripts/requirements-mobsfscan.txt
+                - .github/dependabot.yml
+            verification:
+              - The lock pins mcp 1.30.0, pyjwt 2.15.0, and opentelemetry-api 1.45.1
+            guardrail_refs:
+              - SC-DEP-001
+              - SC-DEP-007
+          - id: AND-003-T4
+            status: done
+            title: Check scripts_ref on every workflow and split the CodeQL upload
+            instructions:
+              files:
+                - .github/workflows/android-codeql.yml
+                - .github/workflows/android-apk-sbom.yml
+                - .github/workflows/android-mobsf.yml
+            verification:
+              - The analyze job does not hold security-events write
+            guardrail_refs:
+              - CI-042
+          - id: AND-003-T5
+            status: done
+            title: Add local CI parity and a Dependabot-safe actionlint job
+            instructions:
+              files:
+                - scripts/check-ci-local.sh
+                - scripts/check-ci-docker.sh
+                - .github/workflows/devops-ci.yml
+            verification:
+              - bash scripts/check-ci-local.sh
+            guardrail_refs:
+              - CI-008
+              - CI-024
+          - id: AND-003-T6
+            status: done
+            title: Rewrite the public-repo deviations and the workflow docs
+            instructions:
+              files:
+                - docs/guardrail-deviations.yml
+                - docs/workflows.md
+                - README.md
+            verification:
+              - python3 .github/scaffold/scripts/issues-sync.py --yaml docs/issues.yml --validate-only
