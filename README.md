@@ -23,6 +23,6 @@ Android jobs.
 | [android-mobsf.yml](.github/workflows/android-mobsf.yml) | mobsfscan with a hash-pinned install |
 | [android-apk-sbom.yml](.github/workflows/android-apk-sbom.yml) | Runtime-classpath CycloneDX and osv-scanner |
 | [android-emulator.yml](.github/workflows/android-emulator.yml) | Instrumented tests on an emulator |
-| [android-release-apk.yml](.github/workflows/android-release-apk.yml) | Release APK, signed when keystore secrets exist, with a CycloneDX bill |
+| [android-release-apk.yml](.github/workflows/android-release-apk.yml) | Release APK, signed when keystore secrets exist, with a CycloneDX bill. Pass `environment` when the keystore is an environment secret. |
 
 Inputs are in [docs/workflows.md](docs/workflows.md).
