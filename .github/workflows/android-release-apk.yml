@@ -10,6 +10,14 @@ on:
         description: Full commit SHA of androiddevops. Must match the uses pin.
         required: true
         type: string
+      environment:
+        description: >-
+          GitHub Environment for this job. Empty runs with no environment.
+          Callers that sign from a tag put the keystore secrets in an
+          environment limited to tag refs.
+        required: false
+        type: string
+        default: ""
       java_version:
         description: Temurin JDK major version
         required: false
@@ -64,6 +72,7 @@ permissions: {}
 jobs:
   release-apk:
     runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
     timeout-minutes: 45
     permissions:
       contents: read

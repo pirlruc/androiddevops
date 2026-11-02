@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.1.0** adds the release CycloneDX bill and the emulator boot retry. Do not move `1.0.0`, `1.0.1`, or `1.0.2`. |
+| **Branch** | `main`. Tag **1.1.1** lets `android-release-apk` select a GitHub Environment. Do not move `1.0.0`, `1.0.1`, `1.0.2`, or `1.1.0`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
@@ -56,4 +56,4 @@ shellcheck scripts/*.sh
 python3 .github/scaffold/scripts/issues-sync.py --yaml docs/issues.yml --validate-only
 ```
 
-*Last updated: 2026-11-01 (1.1.0 release SBOM and emulator boot retry).*
+*Last updated: 2026-11-02 (1.1.1 release-apk environment input).*

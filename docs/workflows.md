@@ -52,3 +52,5 @@ name to
 
 Signing secrets, all or none: `keystore_base64`, `keystore_password`,
 `key_alias`, `key_password`. Empty `keystore_base64` builds an unsigned APK.
+Pass `environment` when those secrets live on a GitHub Environment. The job
+inside this workflow selects that environment. The caller job cannot.
