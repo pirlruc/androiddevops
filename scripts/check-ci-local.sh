@@ -52,7 +52,29 @@ if command -v zizmor >/dev/null 2>&1; then
 else
 	queued="${queued} zizmor"
 fi
+if [ -f docker/android-maestro/Dockerfile ]; then
+	if command -v hadolint >/dev/null 2>&1; then
+		hadolint docker/android-maestro/Dockerfile
+	else
+		queued="${queued} hadolint"
+	fi
+fi
 if [[ -n "${queued}" ]]; then
 	# shellcheck disable=SC2086
 	ADO_DOCKER_STEPS="${queued# }" sh scripts/check-ci-docker.sh
+fi
+
+if [ -f docker/android-maestro/Dockerfile ]; then
+	if [ -z "${DOCKER_HOST:-}" ] && [ -S "${HOME}/.docker/desktop/docker.sock" ]; then
+		export DOCKER_HOST="unix://${HOME}/.docker/desktop/docker.sock"
+	fi
+	docker build -t android-maestro:local docker/android-maestro
+	cst_bin="$(mktemp)"
+	curl -sSfL -o "${cst_bin}" \
+		https://github.com/GoogleContainerTools/container-structure-test/releases/download/v1.19.3/container-structure-test-linux-amd64
+	echo "fa0fa333bb6ba5c14065e7468d2904f5c82d021d7e1c763c9a45c5f2fbe9ff5f  ${cst_bin}" | sha256sum -c
+	chmod +x "${cst_bin}"
+	"${cst_bin}" test --image android-maestro:local \
+		--config docker/android-maestro/container-structure-test.yml
+	rm -f "${cst_bin}"
 fi

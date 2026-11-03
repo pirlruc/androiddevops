@@ -7,9 +7,9 @@ contents:read token after it is private.
 A public caller cannot call these workflows once this repository is private.
 Copy the workflow file at the pinned tag into the caller instead.
 
-Tag 1.3.0 is the current release. Replace `<sha>` below with the commit that
+Tag 1.4.0 is the current release. Replace `<sha>` below with the commit that
 tag points at, and pass the same value as `scripts_ref`. Do not move
-`1.0.0` through `1.2.0`.
+`1.0.0` through `1.3.0`.
 
 ```yaml
 jobs:
@@ -124,3 +124,17 @@ Pass that artifact name to
 `release_artifact` from a later job in the same run. common-release writes the
 `.sha256` files. The caller job cannot set `environment` on this workflow; the
 `environment` input is what selects it.
+
+## `android-maestro-image.yml`
+
+Builds and publishes `ghcr.io/pirlruc/android-maestro`. It runs on pull
+requests that touch `docker/android-maestro/`, on `workflow_dispatch`, and
+when a GitHub Release is published.
+
+| Input | Default | Meaning |
+| --- | --- | --- |
+| `publish` | `false` | `workflow_dispatch` only. Also pushes the image |
+
+The release event publishes without that input. Docker Hub is skipped.
+`containerdevops` is pinned at tag 6.3.6 (`b419c24c`). The image is
+linux/amd64. The publish job signs it when this repository is public.

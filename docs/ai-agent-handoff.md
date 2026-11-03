@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.3.0** installs caller `sdk_packages` on the runner. Tag **1.2.0** fails closed without a keystore. Do not move `1.0.0`, `1.0.1`, `1.0.2`, `1.1.0`, `1.1.1`, or `1.2.0`. |
+| **Branch** | `main`. Tag **1.4.0** publishes `android-maestro` to GHCR. Tag **1.3.0** installs caller `sdk_packages`. Tag **1.2.0** fails closed without a keystore. Do not move `1.0.0` through `1.3.0`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
@@ -26,6 +26,7 @@
 | AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall calls `android-gradle-ci.yml` at 1.3.0 (`a41e029`, merge `d11d939`) and passes `checkout_token`. |
 | AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
 | AND-004 runner SDK packages | done on the 1.3.0 branch. No Android SDK image. |
+| AND-005 Maestro image | done on the 1.4.0 branch. GHCR only. The digest is filled in after the release publish. Doksi and Arbigent are not images here: Doksi is a paid cloud service, and Arbigent was skipped. |
 
 ## Private later
 
@@ -61,4 +62,15 @@ The mobsfscan lock is `scripts/requirements-mobsfscan.txt`, compiled from
 `scripts/requirements-mobsfscan.in` with `scripts/mobsfscan-overrides.txt`.
 The command is the lock header. Do not hand-edit the lock.
 
-*Last updated: 2026-11-03 (heimdall calls 1.3.0; finsilo still inline).*
+The Maestro image is `docker/android-maestro`. Local CI builds
+`android-maestro:local` and runs container-structure-test 1.19.3. High
+findings in the pinned CLI zip are listed in
+`docker/android-maestro/.trivyignore.yaml` and `.grype.yaml`
+(DOCKER-SEC-001). Do not drop those ids to make a scan pass. The
+published digest is recorded here after the 1.4.0 release workflow:
+
+| Image | Digest |
+| --- | --- |
+| android-maestro 1.4.0 | pending the release publish |
+
+*Last updated: 2026-11-03 (1.4.0 Maestro image; digest pending publish).*

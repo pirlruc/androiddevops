@@ -6,7 +6,7 @@
 #   ADO_CI_IMAGE     — override the image (digest pin by default)
 #   ADO_DOCKER_STEPS — space-separated step names (required)
 #
-# Steps: actionlint shellcheck zizmor
+# Steps: actionlint shellcheck zizmor hadolint
 set -eu
 
 SCRIPT_DIR="$(dirname "$0")"
@@ -41,6 +41,7 @@ docker run --rm \
         actionlint) actionlint .github/workflows/*.yml ;;
         shellcheck) shellcheck --severity=error scripts/*.sh ;;
         zizmor) zizmor --min-severity=low .github/workflows ;;
+        hadolint) hadolint docker/android-maestro/Dockerfile ;;
         *) echo "unknown step: $1" >&2; return 1 ;;
       esac
     }

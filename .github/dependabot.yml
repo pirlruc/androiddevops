@@ -58,6 +58,10 @@ updates:
     directory: /scripts
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+  - package-ecosystem: docker
+    directory: /docker/android-maestro
+    patterns: ["*"]
+    multi-ecosystem-group: all-dependencies
   # Dependabot has no pre-commit ecosystem. Update .pre-commit-config.yaml
   # with the hook tool, not a package-ecosystem entry.
   # - package-ecosystem: pre-commit

@@ -1,0 +1,96 @@
+name: Android Maestro Image
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    branches: [main]
+    paths:
+      - "docker/android-maestro/**"
+      - ".github/workflows/android-maestro-image.yml"
+  workflow_dispatch:
+    inputs:
+      publish:
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    permissions:
+      contents: read
+      packages: read
+      security-events: write
+    uses: pirlruc/containerdevops/.github/workflows/container-lint.yml@b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+    with:
+      dockerfile: docker/android-maestro/Dockerfile
+      working_directory: .
+      scripts_ref: b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+      runner_image: ""
+      run_infra_lint: false
+      run_secrets_scan: true
+      blocking: true
+
+  build:
+    needs: [lint]
+    permissions:
+      contents: read
+      packages: write
+    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+    with:
+      context: docker/android-maestro
+      dockerfile: docker/android-maestro/Dockerfile
+      image_name: android-maestro:ci
+      artifact_name: container-image-android-maestro
+      handoff_package: android-maestro
+      scripts_ref: b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+      blocking: true
+      size_class: ci_toolchain
+      structure_test_config: docker/android-maestro/container-structure-test.yml
+      ignorefile: docker/android-maestro/.trivyignore.yaml
+
+  scan:
+    needs: build
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      packages: read
+    uses: pirlruc/containerdevops/.github/workflows/container-scan.yml@b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+    with:
+      image: ${{ format('ghcr.io/{0}/{1}@{2}', github.repository_owner, needs.build.outputs.handoff_package, needs.build.outputs.digest) }}
+      results_artifact: container-scan-android-maestro
+      sarif_category: trivy-android-maestro
+      scripts_ref: b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+      pkg_types: os,library
+      ignorefile: none
+      blocking: false
+
+  publish:
+    needs: [build]
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: pirlruc/containerdevops/.github/workflows/container-publish.yml@b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+    with:
+      context: docker/android-maestro
+      dockerfile: docker/android-maestro/Dockerfile
+      image_name: android-maestro
+      scripts_ref: b419c24cbaf09f39d73fa0146a71155f1a4fbd54
+      platforms: linux/amd64
+      tag_latest: ${{ github.event_name != 'release' || github.event.release.prerelease == false }}
+      image_title: android-maestro
+      image_description: Maestro CLI 2.12.1 on Temurin 21 for Android device flows.
+      sign: ${{ github.event.repository.visibility == 'public' }}
+      blocking: true
+      verify_command: maestro --version
+      source_image: ${{ format('ghcr.io/{0}/{1}@{2}', github.repository_owner, needs.build.outputs.handoff_package, needs.build.outputs.digest) }}

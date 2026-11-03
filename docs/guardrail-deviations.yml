@@ -19,9 +19,21 @@ deviations:
   - id: SC-SIGN-001
     epic: AND-003
     why: >-
-      This repo publishes workflow files, not an image or a package. A GitHub
-      Release of this repo has no binary artifact to sign. Caller APKs are
-      signed with the caller keystore in android-release-apk, and keyless
-      signing of those files is the caller common-release job.
+      A GitHub Release of this repo has no binary artifact to sign. The
+      android-maestro image is signed by container-publish (AND-005) when the
+      repository is public. Caller APKs are signed with the caller keystore
+      in android-release-apk, and keyless signing of those files is the caller
+      common-release job.
     owner: pirlruc
     review: 2026-12-31
+  - id: DOCKER-SEC-001
+    epic: AND-005
+    why: >-
+      android-maestro copies the upstream Maestro 2.12.1 zip and checks its
+      sha256. The high and critical findings are jars inside that zip.
+      Rebuilding those jars would not be the CLI that was pinned. The image
+      is a local CLI, not a service. .trivyignore.yaml and .grype.yaml list
+      those ids and are reviewed when the Maestro pin moves. The fail level
+      stays high.
+    owner: pirlruc
+    review: 2027-02-03

@@ -210,3 +210,68 @@ milestones:
               - actionlint .github/workflows/android-gradle-ci.yml
             guardrail_refs:
               - CI-025
+
+  - name: Phase 2 — Modernization
+    status: open
+    epics:
+      - id: AND-005
+        status: done
+        title: Publish a Maestro image for local device flows
+        overview:
+          problem: >-
+            Callers that want Maestro on a device have to install it on the
+            host. That install is not pinned and is not the same on every
+            machine.
+          goal: >-
+            One digest-pinned image runs the Maestro CLI against the host adb
+            server. GitHub Actions does not run the device flows.
+        decision: >-
+          In the context of local Android device checks, facing a CLI that
+          would otherwise be installed on the host, we decided to publish a
+          non-root Maestro image from this repo to GHCR, to achieve one pin
+          for every caller, accepting that Docker Hub is not published until
+          this repo has registry secrets and that the image does not include
+          the Android SDK.
+        acceptance_criteria:
+          - The image runs maestro 2.12.1 as user 1000 and checks the CLI zip sha256
+          - The image workflow lints, builds, scans, and publishes through containerdevops
+          - Docker Hub is not a publish target
+        guardrail_refs:
+          - DOCKER-BUILD-003
+          - DOCKER-LINT-001
+          - DOCKER-TEST-001
+          - DOCKER-SEC-003
+        tasks:
+          - id: AND-005-T1
+            status: done
+            title: Add the android-maestro image
+            instructions:
+              files:
+                - docker/android-maestro/
+            verification:
+              - docker build docker/android-maestro
+              - container-structure-test on android-maestro:local
+            guardrail_refs:
+              - DOCKER-BUILD-003
+          - id: AND-005-T2
+            status: done
+            title: Publish the image from the release workflow
+            instructions:
+              files:
+                - .github/workflows/android-maestro-image.yml
+            verification:
+              - actionlint .github/workflows/android-maestro-image.yml
+            guardrail_refs:
+              - DOCKER-SEC-003
+          - id: AND-005-T3
+            status: done
+            title: Document the pull command and the local check
+            instructions:
+              files:
+                - README.md
+                - docs/workflows.md
+                - scripts/check-ci-local.sh
+            verification:
+              - python3 scripts/lint-doc-links.py --root .
+            guardrail_refs:
+              - DOCKER-DOC-001
