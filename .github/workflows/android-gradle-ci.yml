@@ -38,6 +38,28 @@ on:
         required: false
         type: string
         default: android-debug-apk
+      sdk_packages:
+        description: >-
+          SDK packages for sdkmanager, separated by spaces or newlines.
+          Empty skips the install. There is no Android SDK image.
+        required: false
+        type: string
+        default: ""
+      cache_path:
+        description: Newline-separated paths for actions/cache. Empty skips the cache.
+        required: false
+        type: string
+        default: ""
+      cache_key:
+        description: Cache key. Required when cache_path is set.
+        required: false
+        type: string
+        default: ""
+      cache_restore_key:
+        description: Optional restore-keys prefix when cache_path is set.
+        required: false
+        type: string
+        default: ""
       pre_command:
         description: Shell command run after checkout and before Gradle. Empty skips.
         required: false
@@ -111,6 +133,33 @@ jobs:
           cache: gradle
 
       - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+
+      - name: Install SDK packages
+        if: inputs.sdk_packages != ''
+        env:
+          SDK_PACKAGES: ${{ inputs.sdk_packages }}
+        run: |
+          set -euo pipefail
+          mapfile -t packages < <(printf '%s\n' "${SDK_PACKAGES}" | tr ' ' '\n' | sed '/^$/d')
+          if [[ ${#packages[@]} -eq 0 ]]; then
+            echo "::error::sdk_packages is set but empty after splitting"
+            exit 1
+          fi
+          sdkmanager "${packages[@]}"
+
+      - name: Require a cache key when a cache path is set
+        if: inputs.cache_path != '' && inputs.cache_key == ''
+        run: |
+          echo "::error::cache_key is required when cache_path is set"
+          exit 1
+
+      - name: Restore caller cache
+        if: inputs.cache_path != ''
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ inputs.cache_path }}
+          key: ${{ inputs.cache_key }}
+          restore-keys: ${{ inputs.cache_restore_key }}
 
       - name: Pre-command
         if: inputs.pre_command != ''

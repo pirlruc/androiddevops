@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.2.0** fails closed without a keystore and fixes the emulator boot. Do not move `1.0.0`, `1.0.1`, `1.0.2`, `1.1.0`, or `1.1.1`. |
+| **Branch** | `main`. Tag **1.3.0** installs caller `sdk_packages` on the runner. Tag **1.2.0** fails closed without a keystore. Do not move `1.0.0`, `1.0.1`, `1.0.2`, `1.1.0`, `1.1.1`, or `1.2.0`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
@@ -23,8 +23,9 @@
 | Epic | Status |
 | --- | --- |
 | AND-001 reusable workflows | done on the 1.0.0 branch |
-| AND-002 finsilo and heimdall adoption | open. Pin callers at 1.2.0. Do not edit those repos from here. finsilo is public. heimdall is private. |
+| AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall pins 1.3.0 and passes `checkout_token`. |
 | AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
+| AND-004 runner SDK packages | done on the 1.3.0 branch. No Android SDK image. |
 
 ## Private later
 
@@ -60,4 +61,4 @@ The mobsfscan lock is `scripts/requirements-mobsfscan.txt`, compiled from
 `scripts/requirements-mobsfscan.in` with `scripts/mobsfscan-overrides.txt`.
 The command is the lock header. Do not hand-edit the lock.
 
-*Last updated: 2026-11-02 (1.2.0 fail-closed signing and emulator boot).*
+*Last updated: 2026-11-03 (1.3.0 sdk_packages on the runner).*

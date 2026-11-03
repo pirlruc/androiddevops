@@ -7,8 +7,9 @@ contents:read token after it is private.
 A public caller cannot call these workflows once this repository is private.
 Copy the workflow file at the pinned tag into the caller instead.
 
-Tag 1.2.0 is the current release. Replace `<sha>` below with the commit that
-tag points at, and pass the same value as `scripts_ref`.
+Tag 1.3.0 is the current release. Replace `<sha>` below with the commit that
+tag points at, and pass the same value as `scripts_ref`. Do not move
+`1.0.0` through `1.2.0`.
 
 ```yaml
 jobs:
@@ -35,7 +36,11 @@ optional secret `checkout_token`.
 | `upload_apk` | `false` | Upload `apk_path` as `artifact_name` for one day |
 | `apk_path` | `app/build/outputs/apk/debug/app-debug.apk` | APK to upload |
 | `artifact_name` | `android-apk` | Artifact name |
-| `pre_command` | empty | Shell after checkout. `command_token` is exported as `GUARDRAILS_READ_TOKEN` |
+| `sdk_packages` | empty | Packages for `sdkmanager`, split on spaces and newlines. Empty skips the install. The job stays on the GitHub runner. There is no Android SDK image. |
+| `cache_path` | empty | Newline-separated paths for `actions/cache`. Empty skips the cache. |
+| `cache_key` | empty | Required when `cache_path` is set |
+| `cache_restore_key` | empty | Optional `restore-keys` prefix |
+| `pre_command` | empty | Shell after the SDK install and cache restore. `command_token` is exported as `GUARDRAILS_READ_TOKEN` |
 | `post_command` | empty | Shell after Gradle |
 
 `command_token` is an optional secret.
