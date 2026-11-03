@@ -4,14 +4,14 @@
 # Base tag in a comment for DOCKER-BUILD-003: eclipse-temurin:21-jre-noble
 # Relay compiler tag: eclipse-temurin:21-jdk-noble
 
-FROM eclipse-temurin:21-jdk-noble@sha256:114cabb73033ca4ce7ceec3deb62396bc1b716282bae051ed3c1d82e38fcab2d AS relay
+FROM eclipse-temurin:24-jdk-noble@sha256:dacac8e9a0df0d2bd24e702b4431132875c249930b70555ebd7ca285b5bee684 AS relay
 
 COPY AdbRelay.java /src/AdbRelay.java
 RUN javac -d /out /src/AdbRelay.java
 
 USER 1000:1000
 
-FROM eclipse-temurin:21-jre-noble@sha256:0eda5830ed7b669abc246a8dc520ea8a23cab06f9a8d4b6964109e2f2394e46f AS fetch
+FROM eclipse-temurin:24-jre-noble@sha256:b416d02335e702b0403ff280de9475a3348e29382285969c9d4e17862ce632e7 AS fetch
 
 COPY maestro.sha256 /tmp/maestro.sha256
 RUN apt-get update \
@@ -24,7 +24,7 @@ RUN apt-get update \
 
 USER 1000:1000
 
-FROM eclipse-temurin:21-jre-noble@sha256:0eda5830ed7b669abc246a8dc520ea8a23cab06f9a8d4b6964109e2f2394e46f
+FROM eclipse-temurin:24-jre-noble@sha256:b416d02335e702b0403ff280de9475a3348e29382285969c9d4e17862ce632e7
 
 LABEL org.opencontainers.image.title="android-maestro" \
       org.opencontainers.image.description="Maestro CLI 2.12.1 on Temurin 21. Non-root 1000:1000. Uses a host adb server." \
