@@ -60,7 +60,7 @@ milestones:
           it can call this repo only while androiddevops stays public.
         acceptance_criteria:
           - finsilo calls the reusables at tag 1.2.0 while androiddevops is public, or vendors them
-          - heimdall calls the reusables at tag 1.2.0 with checkout_token
+          - heimdall calls the reusables at tag 1.3.0 with checkout_token
         tasks:
           - id: AND-002-T1
             status: open
@@ -175,3 +175,38 @@ milestones:
                 - README.md
             verification:
               - python3 .github/scaffold/scripts/issues-sync.py --yaml docs/issues.yml --validate-only
+
+      - id: AND-004
+        status: done
+        title: Install caller SDK packages on the runner
+        overview:
+          problem: >-
+            heimdall needs the NDK and CMake. android-gradle-ci installed
+            only the SDK command-line tools.
+          goal: >-
+            A caller lists SDK packages and the job installs them on the
+            GitHub runner.
+        decision: >-
+          In the context of a native Android caller, facing an SDK that the
+          Gradle job did not install, we decided to add an sdk_packages input
+          that runs sdkmanager on the runner, to achieve NDK builds without
+          an SDK container image, accepting a cold-cache download of those
+          packages.
+        acceptance_criteria:
+          - sdk_packages empty skips sdkmanager
+          - A non-empty list is passed to sdkmanager as separate arguments
+          - No Android SDK image is published
+        guardrail_refs:
+          - CI-025
+        tasks:
+          - id: AND-004-T1
+            status: done
+            title: Add sdk_packages and an optional caller cache
+            instructions:
+              files:
+                - .github/workflows/android-gradle-ci.yml
+                - docs/workflows.md
+            verification:
+              - actionlint .github/workflows/android-gradle-ci.yml
+            guardrail_refs:
+              - CI-025

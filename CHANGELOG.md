@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-03
+
+### Added
+
+- `android-gradle-ci` accepts `sdk_packages` and installs them with
+  `sdkmanager` on the runner. Callers that need the NDK pass the package
+  ids. This repo does not publish an Android SDK image.
+- The same job accepts `cache_path` and `cache_key` for caller build
+  outputs.
+
 ## [1.2.0] - 2026-11-02
 
 ### Changed
