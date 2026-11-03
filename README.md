@@ -18,6 +18,8 @@ such as [heimdall](https://github.com/pirlruc/heimdall), keeps working when it
 passes `checkout_token`.
 
 [mat-aventuras](https://github.com/pirlruc/mat-aventuras) calls tag 1.2.0.
+[heimdall](https://github.com/pirlruc/heimdall) calls `android-gradle-ci.yml`
+at tag 1.3.0 and passes `checkout_token`.
 `sdk_packages` installs extra SDK packages, including the NDK, on the
 runner. There is no Android SDK image.
 [finsilo](https://github.com/pirlruc/finsilo) still inlines its Android jobs.

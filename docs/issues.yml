@@ -71,7 +71,7 @@ milestones:
             verification:
               - finsilo calls pirlruc/androiddevops android-gradle-ci.yml at a commit SHA
           - id: AND-002-T2
-            status: open
+            status: done
             title: Point heimdall Android jobs at androiddevops
             instructions:
               files:
