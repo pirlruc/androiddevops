@@ -26,7 +26,7 @@
 | AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall calls `android-gradle-ci.yml` at 1.3.0 (`a41e029`, merge `d11d939`) and passes `checkout_token`. |
 | AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
 | AND-004 runner SDK packages | done on the 1.3.0 branch. No Android SDK image. |
-| AND-005 Maestro image | done on the 1.4.0 branch. GHCR only. The digest is filled in after the release publish. Doksi and Arbigent are not images here: Doksi is a paid cloud service, and Arbigent was skipped. |
+| AND-005 Maestro image | done. GHCR digest `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da`. Doksi and Arbigent are not images here: Doksi is a paid cloud service, and Arbigent was skipped. |
 
 ## Private later
 
@@ -67,10 +67,10 @@ The Maestro image is `docker/android-maestro`. Local CI builds
 findings in the pinned CLI zip are listed in
 `docker/android-maestro/.trivyignore.yaml` and `.grype.yaml`
 (DOCKER-SEC-001). Do not drop those ids to make a scan pass. The
-published digest is recorded here after the 1.4.0 release workflow:
+published digest from the 1.4.0 release workflow:
 
 | Image | Digest |
 | --- | --- |
-| android-maestro 1.4.0 | pending the release publish |
+| android-maestro 1.4.0 | `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da` |
 
-*Last updated: 2026-11-03 (1.4.0 Maestro image; digest pending publish).*
+*Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
