@@ -18,6 +18,8 @@ public final class AdbRelay {
         int colon = rest.lastIndexOf(':');
         String host = rest.substring(0, colon);
         int port = Integer.parseInt(rest.substring(colon + 1));
+        // adb is a local plaintext protocol. The listen socket is loopback only.
+        // nosemgrep: java.lang.security.audit.crypto.unencrypted-socket.unencrypted-socket
         ServerSocket server = new ServerSocket(5037, 50, InetAddress.getByName("127.0.0.1"));
         while (true) {
             Socket incoming = server.accept();
@@ -28,6 +30,7 @@ public final class AdbRelay {
     }
 
     private static void bridge(Socket incoming, String host, int port) {
+        // nosemgrep: java.lang.security.audit.crypto.unencrypted-socket.unencrypted-socket
         try (Socket upstream = new Socket(host, port)) {
             Thread outbound = new Thread(() -> copy(incoming, upstream));
             outbound.setDaemon(true);

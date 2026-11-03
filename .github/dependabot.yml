@@ -50,14 +50,17 @@ multi-ecosystem-groups:
       default-days: 7
 
 updates:
+  # nosemgrep: package_managers.dependabot.dependabot-missing-cooldown.dependabot-missing-cooldown
   - package-ecosystem: github-actions
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+  # nosemgrep: package_managers.dependabot.dependabot-missing-cooldown.dependabot-missing-cooldown
   - package-ecosystem: pip
     directory: /scripts
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+  # nosemgrep: package_managers.dependabot.dependabot-missing-cooldown.dependabot-missing-cooldown
   - package-ecosystem: docker
     directory: /docker/android-maestro
     patterns: ["*"]
