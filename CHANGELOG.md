@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-03
+
+### Added
+
+- `android-maestro` image: Maestro CLI 2.12.1 on Temurin 21, user 1000.
+  The zip sha256 is checked at build time. The image does not include the
+  Android SDK. `--network host` reaches a Linux engine's adb server. Docker
+  Desktop sets `ADB_SERVER_SOCKET` and the image relays `127.0.0.1:5037`,
+  because Maestro does not read that variable itself. Published to GHCR from
+  the release workflow. Docker Hub is not a target until this repo has
+  registry secrets.
+- Dependabot covers `docker/android-maestro`. Local CI builds the image and
+  runs container-structure-test. High findings inside the pinned Maestro zip
+  are listed in `.trivyignore.yaml` and `.grype.yaml` (DOCKER-SEC-001).
+
 ## [1.3.0] - 2026-11-03
 
 ### Added
