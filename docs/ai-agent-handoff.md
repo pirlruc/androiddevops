@@ -23,7 +23,7 @@
 | Epic | Status |
 | --- | --- |
 | AND-001 reusable workflows | done on the 1.0.0 branch |
-| AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall pins 1.3.0 and passes `checkout_token`. |
+| AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall calls `android-gradle-ci.yml` at 1.3.0 (`a41e029`, merge `d11d939`) and passes `checkout_token`. |
 | AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
 | AND-004 runner SDK packages | done on the 1.3.0 branch. No Android SDK image. |
 
@@ -61,4 +61,4 @@ The mobsfscan lock is `scripts/requirements-mobsfscan.txt`, compiled from
 `scripts/requirements-mobsfscan.in` with `scripts/mobsfscan-overrides.txt`.
 The command is the lock header. Do not hand-edit the lock.
 
-*Last updated: 2026-11-03 (1.3.0 sdk_packages on the runner).*
+*Last updated: 2026-11-03 (heimdall calls 1.3.0; finsilo still inline).*
