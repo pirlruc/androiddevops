@@ -38,8 +38,6 @@ jobs:
       run_shfmt: true
       scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   docs:
     permissions:
@@ -55,8 +53,6 @@ jobs:
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
       scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
@@ -67,8 +63,6 @@ jobs:
     with:
       blocking: true
       scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   actionlint:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
