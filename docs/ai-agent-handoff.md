@@ -74,3 +74,5 @@ published digest from the 1.4.0 release workflow:
 | android-maestro 1.4.0 | `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da` |
 
 *Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
+
+*Last updated: 2026-11-04 — filed documentation follow-up epics moved out of guardrails, methodologies, or github-scaffold. Not implemented here.*
