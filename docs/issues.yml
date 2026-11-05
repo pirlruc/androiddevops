@@ -275,3 +275,39 @@ milestones:
               - python3 scripts/lint-doc-links.py --root .
             guardrail_refs:
               - DOCKER-DOC-001
+
+  - name: Documentation follow-up
+    epics:
+      - id: AND-DOC-001
+        status: open
+        title: Add an Android devcontainer, caller, and Maestro seed
+        overview:
+          problem: >-
+            github-scaffold rejected copies of the Android devcontainer, the
+            androiddevops caller, and the Maestro flow. Those assets belong
+            next to the workflows this repo already publishes.
+          goal: >-
+            This repo ships the devcontainer, a caller template, and a
+            run-maestro script that uses the existing Maestro image.
+        decision: >-
+          In the context of Android callers, facing seeds that were filed in
+          github-scaffold, we decided to own them here, to achieve one
+          toolchain repo, accepting that the SDK license is accepted by the
+          user and not scripted.
+        acceptance_criteria:
+          - A devcontainer does not script SDK license acceptance
+          - templates/ci-android.yml calls this repo's workflows by SHA
+          - A Maestro script uses the published image and does not skip as a green pass when no device is attached
+        tasks:
+          - id: AND-DOC-001-T1
+            status: open
+            title: Add the devcontainer, caller, and Maestro script
+            instructions:
+              files:
+                - .devcontainer/
+                - templates/
+            verification:
+              - The caller pins a SHA and the Maestro script names the image
+            guardrail_refs:
+              - CI-018
+              - CI-035
