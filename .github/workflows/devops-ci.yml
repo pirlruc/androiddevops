@@ -38,8 +38,6 @@ jobs:
       run_shfmt: true
       scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   docs:
     permissions:
@@ -55,8 +53,6 @@ jobs:
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
       scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
@@ -68,7 +64,6 @@ jobs:
       blocking: true
       scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
     secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
       packs_token: ${{ secrets.GUARDRAILS_READ_TOKEN }}
 
   secrets-sast:
@@ -82,8 +77,6 @@ jobs:
       working_directory: .
       scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   security-aggregate:
     if: always()
