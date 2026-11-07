@@ -1,5 +1,5 @@
 # Caller for pirlruc/androiddevops. uses and scripts_ref are the same SHA (CI-034).
-# Pin is androiddevops main 97cae750. Replace it with the 1.5.0 tag commit when that tag exists.
+# Pin is the 1.5.0 tag commit.
 
 name: Android CI
 
@@ -16,7 +16,7 @@ jobs:
   gradle:
     permissions:
       contents: read
-    uses: pirlruc/androiddevops/.github/workflows/android-gradle-ci.yml@97cae750fe7730108d5a51dfd7cc72ee2d3f80d6
+    uses: pirlruc/androiddevops/.github/workflows/android-gradle-ci.yml@423f2bd92c6672f971fb65286815b8ed82aa8230
     with:
-      scripts_ref: 97cae750fe7730108d5a51dfd7cc72ee2d3f80d6
+      scripts_ref: 423f2bd92c6672f971fb65286815b8ed82aa8230
       java_version: "21"
