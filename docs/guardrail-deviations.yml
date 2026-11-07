@@ -7,15 +7,8 @@
 # are omitted. approved_by is omitted for the same reason.
 
 deviations:
-  - id: CI-032
-    epic: AND-003
-    why: >-
-      The repository is public, so a ruleset can require status checks.
-      Setting that ruleset is repository administration and is not part of
-      a workflow change. Callers pin a full commit SHA (CI-018). The earlier
-      Free-plan rationale does not apply while the repo stays public.
-    owner: pirlruc
-    review: 2026-12-31
+  # CI-032 retired 2026-11-07. The default-branch ruleset requires pins and
+  # scaffold / verify. The release-tags ruleset blocks tag deletion and update.
   - id: SC-SIGN-001
     epic: AND-003
     why: >-

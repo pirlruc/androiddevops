@@ -76,3 +76,5 @@ published digest from the 1.4.0 release workflow:
 *Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
 
 *Last updated: 2026-11-04 — filed documentation follow-up epics moved out of guardrails, methodologies, or github-scaffold. Not implemented here.*
+
+*Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*
