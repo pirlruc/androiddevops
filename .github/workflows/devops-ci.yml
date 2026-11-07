@@ -32,19 +32,17 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
+    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@e41270c45b858cfa7a9f8404eaee781b5c29b61c
     with:
       blocking: true
       run_shfmt: true
-      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
+      scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
 
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@e41270c45b858cfa7a9f8404eaee781b5c29b61c
     with:
       blocking: true
       shell_scripts: scripts/*.sh
@@ -54,21 +52,50 @@ jobs:
       yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
-      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
-    secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
+      scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@cb34967f230a0d4841ae1efc2c98e745bd8726a7
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@e41270c45b858cfa7a9f8404eaee781b5c29b61c
     with:
       blocking: true
-      scripts_ref: cb34967f230a0d4841ae1efc2c98e745bd8726a7
+      scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
     secrets:
-      checkout_token: ${{ secrets.COMMONDEVOPS_READ_TOKEN || github.token }}
+      packs_token: ${{ secrets.GUARDRAILS_READ_TOKEN }}
+
+  secrets-sast:
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    permissions:
+      contents: read
+      packages: read
+    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@e41270c45b858cfa7a9f8404eaee781b5c29b61c
+    with:
+      blocking: true
+      working_directory: .
+      scripts_ref: e41270c45b858cfa7a9f8404eaee781b5c29b61c
+      container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
+
+  security-aggregate:
+    if: always()
+    needs: [secrets-sast]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Fail when a security job failed
+        env:
+          SECRETS: ${{ needs.secrets-sast.result }}
+        run: |
+          set -eu
+          if [ "${SECRETS}" != "success" ] && [ "${SECRETS}" != "skipped" ]; then
+            echo "::error::secrets-sast ${SECRETS}"
+            exit 1
+          fi
+          echo "Security aggregate passed."
 
   actionlint:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
@@ -88,8 +115,9 @@ jobs:
           echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tgz" | sha256sum -c
           tar -xzf /tmp/actionlint.tgz -C /tmp actionlint
           /tmp/actionlint .github/workflows/*.yml
-          python3 -m pip install --user zizmor==1.31.1
-          python3 -m zizmor --min-severity=low .github/workflows
+          python3 -m venv /tmp/zizmor-venv
+          /tmp/zizmor-venv/bin/pip install zizmor==1.31.1
+          /tmp/zizmor-venv/bin/zizmor --min-severity=low .github/workflows
 
   tests:
     runs-on: ubuntu-24.04

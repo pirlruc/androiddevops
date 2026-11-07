@@ -14,11 +14,11 @@ with:
 
 If this repository is made private, a public caller cannot use `workflow_call`.
 That caller has to vendor the pinned workflow file instead. A private caller,
-such as [heimdall](https://github.com/pirlruc/heimdall), keeps working when it
+such as [heimdall](https://github.com/NjordLabs/heimdall), keeps working when it
 passes `checkout_token`.
 
 [mat-aventuras](https://github.com/pirlruc/mat-aventuras) calls tag 1.2.0.
-[heimdall](https://github.com/pirlruc/heimdall) calls `android-gradle-ci.yml`
+[heimdall](https://github.com/NjordLabs/heimdall) calls `android-gradle-ci.yml`
 at tag 1.3.0 and passes `checkout_token`.
 `sdk_packages` installs extra SDK packages, including the NDK, on the
 runner. There is no Android SDK image.

@@ -37,6 +37,13 @@
 
 version: 2
 
+registries:
+  github-private:
+    type: git
+    url: https://github.com
+    username: x-access-token
+    password: ${{secrets.DEPENDABOT_GITHUB_TOKEN}}
+
 multi-ecosystem-groups:
   all-dependencies:
     schedule:
@@ -65,6 +72,25 @@ updates:
     directory: /docker/android-maestro
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+    ignore:
+      # KT-BUILD-001. Temurin 21 stays. 22, 23, and 24 are not LTS.
+      # 25 is LTS and waits on a local Maestro image test.
+      - dependency-name: "eclipse-temurin"
+        versions: ["22", "23", "24"]
+
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: Europe/Lisbon
+    registries:
+      - github-private
+    commit-message:
+      prefix: build
+      include: scope
+    cooldown:
+      default-days: 7
   # Dependabot has no pre-commit ecosystem. Update .pre-commit-config.yaml
   # with the hook tool, not a package-ecosystem entry.
   # - package-ecosystem: pre-commit

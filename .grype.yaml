@@ -1,54 +1,54 @@
 # Maestro CLI jars. Review with the 2.12.1 pin. See docs/guardrail-deviations.yml DOCKER-SEC-001.
 ignore:
   - vulnerability: GHSA-3qp7-7mw8-wx86
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-4g8c-wm8x-jfhw
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-558v-64gr-wgg4
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-57rv-r2g8-2cj3
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-6jqx-86gh-f27w
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-735f-pc8j-v9w8
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-7hhh-6rmp-j9qf
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-93wv-jw9v-4972
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-c4c3-7fpv-j4q5
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-c653-97m9-rcg9
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-cxp5-3px4-pw24
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-f6hv-jmp6-3vwv
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-g3pr-3p32-fp23
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-j3rv-43j4-c7qm
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-jppx-w49h-x2qq
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-mj4r-2hfc-f8p6
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-mvh2-crg5-v77c
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-p6pp-m3f8-5c89
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-prj3-ccx8-p6x4
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-pwqr-wmgm-9rr8
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-q4xh-88c3-wmh7
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-r7wm-3cxj-wff9
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-rmj7-2vxq-3g9f
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-w9fj-cfpg-grvv
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-wv8q-qhhj-9h54
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.
   - vulnerability: GHSA-x4gw-5cx5-pgmh
-    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves.
+    reason: Pinned Maestro CLI 2.12.1 zip. These jars are inside that zip. Replacing them would not be the upstream CLI. Review when the pin moves. Review date 2026-12-06.

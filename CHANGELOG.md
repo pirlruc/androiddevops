@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `.devcontainer/`, `templates/ci-android.yml`, and `scripts/run-maestro.sh`.
+  The Maestro script fails when no device is attached (AND-DOC-001).
+- Dependabot updates git submodules outside the grouped pull request.
+  Non-LTS Temurin 22, 23, and 24 stay ignored (KT-BUILD-001).
+
+### Changed
+
+- `.gitmodules` keeps the path-named stanzas.
+- Guardrails 1.15.0, github-scaffold 1.12.0, commondevops 6.0.1, and
+  containerdevops 6.4.0. Scaffold verify receives `packs_token`.
+- The Dependabot actionlint job installs zizmor in a virtualenv.
+- `android-gradle-ci` no longer checks out an unused README.
+- README links for heimdall point at NjordLabs. SECURITY.md links the
+  advisories page. Trivy ignores expire on 2026-12-06 and Grype ignores
+  carry that review date.
+- AND-002-T1 is rejected. The finsilo adoption lives in that repo.
+
 ## [1.4.0] - 2026-11-03
 
 ### Added

@@ -111,17 +111,6 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: pirlruc/androiddevops
-          ref: ${{ inputs.scripts_ref }}
-          token: ${{ secrets.checkout_token || github.token }}
-          persist-credentials: false
-          path: .androiddevops
-          sparse-checkout: |
-            README.md
-          sparse-checkout-cone-mode: false
-
       - name: Gradle wrapper validation
         if: inputs.validate_wrapper
         uses: gradle/actions/wrapper-validation@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
