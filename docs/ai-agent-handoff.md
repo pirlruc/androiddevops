@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| **Remote** | https://github.com/pirlruc/androiddevops (public). The owner can set the repo private. Do not change visibility from an agent session. |
+| **Remote** | <https://github.com/pirlruc/androiddevops> (public). The owner can set the repo private. Do not change visibility from an agent session. |
 | **Branch** | `main`. Tag **1.4.0** publishes `android-maestro` to GHCR. Tag **1.3.0** installs caller `sdk_packages`. Tag **1.2.0** fails closed without a keystore. Do not move `1.0.0` through `1.3.0`. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
@@ -12,9 +12,9 @@
 
 | Component | Ref |
 | --- | --- |
-| guardrails | tag **1.13.1** → `1945211ac851c3c0f83694bd4ea53571fdced4ab` |
-| github-scaffold | tag **1.10.2** → `c8eddcfb2c8a808981e640fa9739cb4fcefa991e` |
-| commondevops | tag **5.8.0** → `cb34967f230a0d4841ae1efc2c98e745bd8726a7` |
+| guardrails | tag **1.15.0** → `2d4bb70e95449f6922781716857adeb22badf676` |
+| github-scaffold | tag **1.12.0** → `9c443ea978851768f451b1df2020dd86dfb1a967` |
+| commondevops | tag **6.0.1** → `e41270c45b858cfa7a9f8404eaee781b5c29b61c` |
 | ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
 

@@ -63,7 +63,10 @@ milestones:
           - heimdall calls the reusables at tag 1.3.0 with checkout_token
         tasks:
           - id: AND-002-T1
-            status: open
+            status: rejected
+            resolution: >-
+              Re-filed in finsilo. androiddevops does not own that caller's
+              workflows. finsilo adopts the reusable when it is ready.
             title: Point finsilo Android jobs at androiddevops
             instructions:
               files:
@@ -279,7 +282,7 @@ milestones:
   - name: Documentation follow-up
     epics:
       - id: AND-DOC-001
-        status: open
+        status: done
         title: Add an Android devcontainer, caller, and Maestro seed
         overview:
           problem: >-
@@ -300,7 +303,7 @@ milestones:
           - A Maestro script uses the published image and does not skip as a green pass when no device is attached
         tasks:
           - id: AND-DOC-001-T1
-            status: open
+            status: done
             title: Add the devcontainer, caller, and Maestro script
             instructions:
               files:
