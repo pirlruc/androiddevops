@@ -27,11 +27,11 @@ jobs:
       contents: read
       packages: read
       security-events: write
-    uses: pirlruc/containerdevops/.github/workflows/container-lint.yml@6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+    uses: pirlruc/containerdevops/.github/workflows/container-lint.yml@b8c0746603eefdc89571b17c62d1e965b28ff31f
     with:
       dockerfile: docker/android-maestro/Dockerfile
       working_directory: .
-      scripts_ref: 6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+      scripts_ref: b8c0746603eefdc89571b17c62d1e965b28ff31f
       runner_image: ""
       run_infra_lint: false
       run_secrets_scan: true
@@ -42,14 +42,14 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+    uses: pirlruc/containerdevops/.github/workflows/container-build.yml@b8c0746603eefdc89571b17c62d1e965b28ff31f
     with:
       context: docker/android-maestro
       dockerfile: docker/android-maestro/Dockerfile
       image_name: android-maestro:ci
       artifact_name: container-image-android-maestro
       handoff_package: android-maestro
-      scripts_ref: 6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+      scripts_ref: b8c0746603eefdc89571b17c62d1e965b28ff31f
       blocking: true
       size_class: ci_toolchain
       structure_test_config: docker/android-maestro/container-structure-test.yml
@@ -62,12 +62,12 @@ jobs:
       contents: read
       security-events: write
       packages: read
-    uses: pirlruc/containerdevops/.github/workflows/container-scan.yml@6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+    uses: pirlruc/containerdevops/.github/workflows/container-scan.yml@b8c0746603eefdc89571b17c62d1e965b28ff31f
     with:
       image: ${{ format('ghcr.io/{0}/{1}@{2}', github.repository_owner, needs.build.outputs.handoff_package, needs.build.outputs.digest) }}
       results_artifact: container-scan-android-maestro
       sarif_category: trivy-android-maestro
-      scripts_ref: 6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+      scripts_ref: b8c0746603eefdc89571b17c62d1e965b28ff31f
       pkg_types: os,library
       ignorefile: none
       blocking: false
@@ -80,17 +80,28 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: pirlruc/containerdevops/.github/workflows/container-publish.yml@6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+    uses: pirlruc/containerdevops/.github/workflows/container-publish.yml@b8c0746603eefdc89571b17c62d1e965b28ff31f
     with:
       context: docker/android-maestro
       dockerfile: docker/android-maestro/Dockerfile
       image_name: android-maestro
-      scripts_ref: 6ccc0abe77f578f6b6c0a35430eae0334ffa94bd
+      scripts_ref: b8c0746603eefdc89571b17c62d1e965b28ff31f
       platforms: linux/amd64
       tag_latest: ${{ github.event_name != 'release' || github.event.release.prerelease == false }}
+      environment: ${{ github.event_name == 'release' && 'release' || '' }}
       image_title: android-maestro
-      image_description: Maestro CLI 2.12.1 on Temurin 21 for Android device flows.
+      image_description: Maestro CLI 2.12.1 on Temurin 25 for Android device flows.
       sign: ${{ github.event.repository.visibility == 'public' }}
       blocking: true
       verify_command: maestro --version
       source_image: ${{ format('ghcr.io/{0}/{1}@{2}', github.repository_owner, needs.build.outputs.handoff_package, needs.build.outputs.digest) }}
+
+  release-digests:
+    needs: [publish]
+    if: github.event_name == 'release' && needs.publish.result == 'success'
+    permissions:
+      contents: write
+      packages: read
+    uses: pirlruc/commondevops/.github/workflows/common-release-digests.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    with:
+      images: ghcr.io/${{ github.repository_owner }}/android-maestro:${{ github.event.release.tag_name }}

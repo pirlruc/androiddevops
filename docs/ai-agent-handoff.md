@@ -14,7 +14,8 @@
 | --- | --- |
 | guardrails | tag **1.15.0** → `2d4bb70e95449f6922781716857adeb22badf676` |
 | github-scaffold | tag **1.12.0** → `9c443ea978851768f451b1df2020dd86dfb1a967` |
-| commondevops | tag **6.0.1** → `e41270c45b858cfa7a9f8404eaee781b5c29b61c` |
+| commondevops | tag **6.1.0** → `2c5e1ebe9797828128e01f3941b5a02650abe59a` |
+| containerdevops | tag **6.5.0** → `b8c0746603eefdc89571b17c62d1e965b28ff31f` |
 | ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
 
@@ -76,5 +77,7 @@ published digest from the 1.4.0 release workflow:
 *Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
 
 *Last updated: 2026-11-04 — filed documentation follow-up epics moved out of guardrails, methodologies, or github-scaffold. Not implemented here.*
+
+*Last updated: 2026-11-07 — 1.6.0. Temurin 25 Maestro image. mcp 2.3.0. commondevops 6.1.0. containerdevops 6.5.0. SC-SIGN-001 stays because a Release has no separate binary.*
 
 *Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*

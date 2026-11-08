@@ -1,21 +1,23 @@
 # syntax=docker/dockerfile:1
 # Maestro CLI for device flows. No HEALTHCHECK: this image is a CLI, not a service.
 # kics-scan disable=b03a748a-542d-44f4-bb86-9199ab4fd2d5
-# Base tag in a comment for DOCKER-BUILD-003: eclipse-temurin:21-jre-noble
-# Relay compiler tag: eclipse-temurin:21-jdk-noble
+# Base tag in a comment for DOCKER-BUILD-003: eclipse-temurin:25-jre-noble
+# Relay compiler tag: eclipse-temurin:25-jdk-noble
 
-FROM eclipse-temurin:21-jdk-noble@sha256:114cabb73033ca4ce7ceec3deb62396bc1b716282bae051ed3c1d82e38fcab2d AS relay
+FROM eclipse-temurin:25-jdk-noble@sha256:95e350ad1eb738f943e141640f7e3d797e483359a3b33c3864255bfd1ad71f8a AS relay
 
 COPY AdbRelay.java /src/AdbRelay.java
 RUN javac -d /out /src/AdbRelay.java
 
 USER 1000:1000
 
-FROM eclipse-temurin:21-jre-noble@sha256:0eda5830ed7b669abc246a8dc520ea8a23cab06f9a8d4b6964109e2f2394e46f AS fetch
+FROM eclipse-temurin:25-jre-noble@sha256:a98128a57de944a72bd31fbc79b898edd5a5864d3652071d5bbd2160ab7d7dce AS fetch
 
 COPY maestro.sha256 /tmp/maestro.sha256
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip=6.0-28ubuntu4.1 \
+    && apt-get install -y --no-install-recommends \
+         curl=8.5.0-2ubuntu10.16 \
+         unzip=6.0-28ubuntu4.1 \
     && curl -fsSL -o /tmp/maestro.zip \
         https://github.com/mobile-dev-inc/maestro/releases/download/cli-2.12.1/maestro.zip \
     && sha256sum -c /tmp/maestro.sha256 \
@@ -24,10 +26,10 @@ RUN apt-get update \
 
 USER 1000:1000
 
-FROM eclipse-temurin:21-jre-noble@sha256:0eda5830ed7b669abc246a8dc520ea8a23cab06f9a8d4b6964109e2f2394e46f
+FROM eclipse-temurin:25-jre-noble@sha256:a98128a57de944a72bd31fbc79b898edd5a5864d3652071d5bbd2160ab7d7dce
 
 LABEL org.opencontainers.image.title="android-maestro" \
-      org.opencontainers.image.description="Maestro CLI 2.12.1 on Temurin 21. Non-root 1000:1000. Uses a host adb server." \
+      org.opencontainers.image.description="Maestro CLI 2.12.1 on Temurin 25. Non-root 1000:1000. Uses a host adb server." \
       org.opencontainers.image.source="https://github.com/pirlruc/androiddevops" \
       org.opencontainers.image.vendor="pirlruc" \
       org.opencontainers.image.licenses="Apache-2.0"

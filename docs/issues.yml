@@ -314,3 +314,39 @@ milestones:
             guardrail_refs:
               - CI-018
               - CI-035
+      - id: AND-IMG-002
+        status: done
+        title: Move Maestro to Temurin 25 and append release digests
+        overview:
+          problem: >-
+            The Maestro image is Temurin 21, the image workflow does not
+            append release digests, and the mobsfscan lock is behind mcp 2.3.0.
+          goal: >-
+            The image builds and maestro --version passes on Temurin 25, and
+            a release records the digest.
+        decision: >-
+          In the context of the Maestro image, facing a Java 21 base, we
+          decided to move to Temurin 25 LTS and to install curl in the fetch
+          stage, to achieve a current JDK, accepting that the fetch stage
+          is the only place curl is installed.
+        acceptance_criteria:
+          - The image structure test runs maestro --version
+          - android-maestro-image calls common-release-digests
+          - The mobsfscan lock pins mcp 2.3.0
+        guardrail_refs:
+          - REL-PUB-005
+          - DOCKER-BUILD-003
+        tasks:
+          - id: AND-IMG-002-T1
+            status: done
+            title: Build the image and refresh the lock
+            instructions:
+              files:
+                - docker/android-maestro/Dockerfile
+                - .github/workflows/android-maestro-image.yml
+                - scripts/requirements-mobsfscan.txt
+            verification:
+              - maestro --version succeeds in the local image
+              - rg -n mcp==2.3.0 scripts/requirements-mobsfscan.txt
+            guardrail_refs:
+              - REL-PUB-005
