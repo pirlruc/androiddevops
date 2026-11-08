@@ -7,8 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-11-07
+
+### Added
+
+- `android-maestro-image` appends the published image digest to the GitHub Release.
+
 ### Changed
 
+- Callers pin commondevops 6.1.0 and containerdevops 6.5.0. Image publish passes `environment: release` only on a release event.
+- setup-java is v6.2.0 and CodeQL is v4.39.3.
+- android-maestro is Temurin 25. The fetch stage installs curl because that JRE image does not ship it.
+- The mobsfscan override pins mcp 2.3.0. The lock installs and `import mcp` succeeds.
+- SC-SIGN-001 stays. The image publish job sets `sign` when the repository is public. A GitHub Release still has no separate binary to sign.
 - `templates/ci-android.yml` pins the 1.5.0 tag commit.
 
 ## [1.5.0] - 2026-11-07

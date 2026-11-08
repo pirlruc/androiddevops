@@ -12,9 +12,10 @@ deviations:
   - id: SC-SIGN-001
     epic: AND-003
     why: >-
-      A GitHub Release of this repo has no binary artifact to sign. The
-      android-maestro image is signed by container-publish (AND-005) when the
-      repository is public. Caller APKs are signed with the caller keystore
+      Re-checked 2026-11-07. android-maestro-image sets sign when the
+      repository is public, so the image is keyless-signed. A GitHub Release
+      of this repo still has no separate binary artifact to sign. Caller APKs
+      are signed with the caller keystore
       in android-release-apk, and keyless signing of those files is the caller
       common-release job.
     owner: pirlruc
