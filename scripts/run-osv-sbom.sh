@@ -61,3 +61,5 @@ if [[ ! -s $SARIF ]]; then
 fi
 
 python3 "${SCRIPT_DIR}/fail-on-sarif-severity.py" --min-severity high "$SARIF"
+bash "${SCRIPT_DIR}/run-grype-cyclonedx.sh" "$SBOM"
+python3 "${SCRIPT_DIR}/check-cyclonedx-licenses.py" "$SBOM"

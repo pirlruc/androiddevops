@@ -350,3 +350,41 @@ milestones:
               - rg -n mcp==2.3.0 scripts/requirements-mobsfscan.txt
             guardrail_refs:
               - REL-PUB-005
+      - id: AND-006
+        status: done
+        title: Scan Gradle bills and offer caller guardrail scripts
+        overview:
+          problem: >-
+            Callers each install grype and copy license checks. The Gradle
+            bill is the inventory a dex APK does not carry.
+          goal: >-
+            The SBOM workflows scan that bill, and callers can opt into the
+            shared Kotlin and Android checks.
+        decision: >-
+          In the context of Android supply-chain gates, facing copied
+          scanners, we decided to run grype and the license deny list inside
+          the SBOM script and to keep the source checks opt-in, to achieve
+          one scanner pin, accepting that existing callers stay green until
+          they set guardrail_checks.
+        acceptance_criteria:
+          - run-osv-sbom.sh runs grype and the CycloneDX license check
+          - guardrail_checks defaults to false
+          - run-maestro.sh pins a digest and supports host adb from Docker Desktop
+        guardrail_refs:
+          - KT-SEC-004
+          - SC-LIC-001
+          - CI-035
+        tasks:
+          - id: AND-006-T1
+            status: done
+            title: Add the scanners and the opt-in checks
+            instructions:
+              files:
+                - scripts/run-osv-sbom.sh
+                - scripts/run-grype-cyclonedx.sh
+                - .github/workflows/android-gradle-ci.yml
+            verification:
+              - python3 scripts/check-cyclonedx-licenses.py is present
+            guardrail_refs:
+              - KT-SEC-004
+              - SC-LIC-001
