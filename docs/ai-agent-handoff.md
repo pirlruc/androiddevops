@@ -82,4 +82,4 @@ published digest from the 1.4.0 release workflow:
 
 *Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*
 
-*Last updated: 2026-11-12 — The private caller link cites NjordLabs/heimdall. SBOM jobs scan the Gradle bill with grype and a license deny list. guardrail_checks stays opt-in.*
+*Last updated: 2026-11-12 — 1.7.0. The private caller link cites NjordLabs/heimdall. SBOM jobs scan the Gradle bill with grype and a license deny list. guardrail_checks stays opt-in.*
