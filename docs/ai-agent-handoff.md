@@ -80,4 +80,6 @@ published digest from the 1.4.0 release workflow:
 
 *Last updated: 2026-11-07 — 1.6.0. Temurin 25 Maestro image. mcp 2.3.0. commondevops 6.1.0. containerdevops 6.5.0. SC-SIGN-001 stays because a Release has no separate binary.*
 
+*Last updated: 2026-11-12 — SBOM jobs scan the Gradle bill with grype and a license deny list. guardrail_checks stays opt-in.*
+
 *Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*

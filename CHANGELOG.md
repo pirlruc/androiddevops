@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Runtime-classpath bills are scanned with checksum-pinned grype and a CycloneDX license deny list.
+- `android-gradle-ci` takes `guardrail_checks` for the Kotlin and Android scripts.
+- `run-maestro.sh` pins the image digest and reaches the host adb server from Docker Desktop.
+
 ## [1.6.0] - 2026-11-07
 
 ### Added

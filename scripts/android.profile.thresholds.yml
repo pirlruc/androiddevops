@@ -1,0 +1,5 @@
+# Org-default numeric gates for Android repositories.
+# SDK, NDK, and AGP versions are consumer pins (ANDROID-BUILD-001), not keys here.
+# Repos may override values with a recorded justification (Epic required when lowering a gate).
+
+android_lint_max_errors: 0       # ANDROID-LINT-001

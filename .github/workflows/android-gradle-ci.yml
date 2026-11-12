@@ -70,6 +70,13 @@ on:
         required: false
         type: string
         default: ""
+      guardrail_checks:
+        description: >-
+          Run the Kotlin and Android guardrail scripts after Gradle.
+          Default false so existing callers stay green.
+        required: false
+        type: boolean
+        default: false
     secrets:
       checkout_token:
         description: >-
@@ -164,6 +171,26 @@ jobs:
           set -euo pipefail
           # shellcheck disable=SC2086
           ./gradlew --no-daemon ${GRADLE_TASKS}
+
+      - name: Checkout guardrail scripts
+        if: inputs.guardrail_checks
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/androiddevops
+          ref: ${{ inputs.scripts_ref }}
+          token: ${{ secrets.checkout_token || github.token }}
+          persist-credentials: false
+          path: .androiddevops
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Kotlin and Android guardrails
+        if: inputs.guardrail_checks
+        run: |
+          set -euo pipefail
+          python3 .androiddevops/scripts/check-kotlin-guardrails.py
+          python3 .androiddevops/scripts/check-android-guardrails.py
 
       - name: Post-command
         if: inputs.post_command != ''
