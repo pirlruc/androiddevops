@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-11-12
+
 ### Added
 
 - Runtime-classpath bills are scanned with checksum-pinned grype and a CycloneDX license deny list.
