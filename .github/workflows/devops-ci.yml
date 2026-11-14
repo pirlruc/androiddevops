@@ -32,7 +32,7 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
     with:
       blocking: true
       run_shfmt: true
@@ -42,7 +42,7 @@ jobs:
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
     with:
       blocking: true
       shell_scripts: scripts/*.sh
@@ -59,7 +59,7 @@ jobs:
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
     with:
       blocking: true
       scripts_ref: 2c5e1ebe9797828128e01f3941b5a02650abe59a
@@ -71,7 +71,7 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
     with:
       blocking: true
       working_directory: .

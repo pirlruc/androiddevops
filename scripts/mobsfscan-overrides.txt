@@ -2,7 +2,7 @@
 # The override installs mcp 2.3.0. import mcp succeeds beside semgrep 1.183.0.
 # semgrep still declares opentelemetry-api ~=1.37. The CLI import of the
 # 1.37 exporter against the overridden 1.45 API stays a known mismatch.
-semgrep==1.183.0
+semgrep==1.185.0
 mcp==2.3.0
 pyjwt[crypto]==2.15.1
 opentelemetry-api==1.45.2
