@@ -62,6 +62,8 @@ updates:
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+    registries:
+      - github-private
   # nosemgrep: package_managers.dependabot.dependabot-missing-cooldown.dependabot-missing-cooldown
   - package-ecosystem: pip
     directory: /scripts
@@ -72,6 +74,8 @@ updates:
     directory: /docker/android-maestro
     patterns: ["*"]
     multi-ecosystem-group: all-dependencies
+    registries:
+      - github-private
     ignore:
       # KT-BUILD-001. Temurin 21 stays. 22, 23, and 24 are not LTS.
       # 25 is LTS and waits on a local Maestro image test.
