@@ -142,15 +142,19 @@ jobs:
           if command -v unzip >/dev/null 2>&1; then
             exit 0
           fi
-          export DEBIAN_FRONTEND=noninteractive
-          # The homelab runner unit sets NoNewPrivileges, so sudo cannot run.
-          if [ "$(id -u)" -eq 0 ]; then
-            apt-get update
-            apt-get install -y unzip
-          else
-            sudo apt-get update
-            sudo apt-get install -y unzip
-          fi
+          # The homelab job user is not root, and NoNewPrivileges blocks sudo.
+          prefix="${HOME}/.local"
+          work="${RUNNER_TEMP}/unzip-deb"
+          mkdir -p "${prefix}" "${work}"
+          (
+            cd "${work}"
+            apt-get download unzip
+            apt-get download libbz2-1.0 || true
+            for deb in ./*.deb; do
+              dpkg-deb -x "${deb}" "${prefix}"
+            done
+          )
+          echo "${prefix}/usr/bin" >> "${GITHUB_PATH}"
 
       - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
 
