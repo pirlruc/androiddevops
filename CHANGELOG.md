@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `android-gradle-ci` takes `runs_on`. The default stays the GitHub-hosted `ubuntu-24.04` label. A caller passes a JSON array to select a self-hosted runner.
+
 ## [1.7.0] - 2026-11-12
 
 ### Added
