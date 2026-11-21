@@ -28,3 +28,5 @@ milestones:
     description: Foundation work
   - name: Phase 2 — Modernization
     description: Remaining modernization gaps
+  - name: Native dependency checkout
+    description: vcpkg checkout for a private native registry
