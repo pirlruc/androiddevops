@@ -388,3 +388,35 @@ milestones:
             guardrail_refs:
               - KT-SEC-004
               - SC-LIC-001
+
+  - name: Native dependency checkout
+    status: open
+    epics:
+      - id: AND-VCPKG-001
+        status: open
+        title: Give Gradle CI a vcpkg checkout
+        overview:
+          problem: >-
+            A mixed Kotlin and native caller that builds with vcpkg has to
+            clone the tool itself before android-gradle-ci runs Gradle.
+          goal: >-
+            The reusable job can prepare vcpkg and a private registry
+            credential without changing callers that leave the input off.
+        decision: >-
+          In the context of an Android native build, facing a missing
+          vcpkg on the runner, we decided the Gradle workflow clones a
+          pinned vcpkg and caches binaries by triplet, to achieve one
+          setup for every caller, accepting that the default stays off.
+        acceptance_criteria:
+          - enable_vcpkg defaults to false
+          - the job exports VCPKG_ROOT when the input is true
+          - a registry token is not written to the runner git config
+        tasks:
+          - id: AND-VCPKG-001-T1
+            status: open
+            title: Add the vcpkg inputs and the cache
+            instructions:
+              files:
+                - .github/workflows/android-gradle-ci.yml
+            verification:
+              - rg -n enable_vcpkg .github/workflows/android-gradle-ci.yml

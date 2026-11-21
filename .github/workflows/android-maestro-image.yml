@@ -102,6 +102,6 @@ jobs:
     permissions:
       contents: write
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-release-digests.yml@2c5e1ebe9797828128e01f3941b5a02650abe59a
+    uses: pirlruc/commondevops/.github/workflows/common-release-digests.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
     with:
       images: ghcr.io/${{ github.repository_owner }}/android-maestro:${{ github.event.release.tag_name }}
