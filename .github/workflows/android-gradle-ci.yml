@@ -85,6 +85,24 @@ on:
         required: false
         type: string
         default: '"ubuntu-24.04"'
+      enable_vcpkg:
+        description: >-
+          Clone microsoft/vcpkg at vcpkg_commit and export VCPKG_ROOT
+          before Gradle. Default false so existing callers stay unchanged.
+        required: false
+        type: boolean
+        default: false
+      vcpkg_commit:
+        description: microsoft/vcpkg commit used when enable_vcpkg is true.
+        required: false
+        type: string
+        default: "434307da09bc05b2c86996dccc8b2351fc0d5d37"
+      vcpkg_triplet:
+        description: >-
+          Triplet named in the vcpkg binary-cache key. Empty uses host.
+        required: false
+        type: string
+        default: ""
     secrets:
       checkout_token:
         description: >-
@@ -95,6 +113,11 @@ on:
         description: >-
           Optional token exported as GUARDRAILS_READ_TOKEN for pre_command.
           Empty leaves the variable unset.
+        required: false
+      registry_token:
+        description: >-
+          contents:read on a private vcpkg git registry. Empty leaves
+          public GitHub fetches on github.token.
         required: false
 
 permissions: {}
@@ -184,6 +207,46 @@ jobs:
           path: ${{ inputs.cache_path }}
           key: ${{ inputs.cache_key }}
           restore-keys: ${{ inputs.cache_restore_key }}
+
+      - name: Prepare vcpkg
+        if: inputs.enable_vcpkg
+        env:
+          VCPKG_COMMIT: ${{ inputs.vcpkg_commit }}
+          VCPKG_TRIPLET: ${{ inputs.vcpkg_triplet }}
+          REGISTRY_TOKEN: ${{ secrets.registry_token }}
+        run: |
+          set -euo pipefail
+          root="${HOME}/.cache/vcpkg-root"
+          cache="${HOME}/.cache/vcpkg-binary"
+          mkdir -p "${cache}"
+          if [[ ! -x "${root}/vcpkg" ]]; then
+            rm -rf "${root}"
+            git clone --filter=blob:none https://github.com/microsoft/vcpkg.git "${root}"
+            git -C "${root}" checkout --detach "${VCPKG_COMMIT}"
+            "${root}/bootstrap-vcpkg.sh" -disableMetrics
+          fi
+          {
+            echo "VCPKG_ROOT=${root}"
+            echo "VCPKG_DISABLE_METRICS=1"
+            echo "VCPKG_DEFAULT_BINARY_CACHE=${cache}"
+            if [[ -n "${VCPKG_TRIPLET}" ]]; then
+              echo "VCPKG_DEFAULT_TRIPLET=${VCPKG_TRIPLET}"
+            fi
+            if [[ -n "${REGISTRY_TOKEN}" ]]; then
+              # Process environment only. A persistent runner must not keep the token in ~/.gitconfig.
+              echo "GIT_CONFIG_COUNT=1"
+              echo "GIT_CONFIG_KEY_0=url.https://x-access-token:${REGISTRY_TOKEN}@github.com/.insteadOf"
+              echo "GIT_CONFIG_VALUE_0=https://github.com/"
+            fi
+          } >> "${GITHUB_ENV}"
+
+      - name: Restore vcpkg binary cache
+        if: inputs.enable_vcpkg
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/vcpkg-binary
+          key: vcpkg-${{ runner.os }}-${{ inputs.vcpkg_triplet }}-${{ inputs.vcpkg_commit }}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json') }}
+          restore-keys: vcpkg-${{ runner.os }}-${{ inputs.vcpkg_triplet }}-${{ inputs.vcpkg_commit }}-
 
       - name: Pre-command
         if: inputs.pre_command != ''

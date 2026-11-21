@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `android-gradle-ci` takes `runs_on`. The default stays the GitHub-hosted `ubuntu-24.04` label. A caller passes a JSON array to select a self-hosted runner.
 - `android-gradle-ci` installs `unzip` into the job home when the runner does not have it. The homelab job user is not root, and `sudo` cannot run.
+- `android-gradle-ci` takes `enable_vcpkg`. When set, the job clones microsoft/vcpkg at `vcpkg_commit`, exports `VCPKG_ROOT`, and caches the binary directory by triplet, commit, and manifest. `registry_token` authenticates a private registry for that job only.
+
+### Changed
+
+- DevOps CI and the Maestro digest job pin commondevops `c775138` (6.1.1), including `scripts_ref`.
+- The MobSF override uses semgrep 1.185.0.
 
 ## [1.7.0] - 2026-11-12
 
