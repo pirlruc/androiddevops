@@ -30,6 +30,11 @@ on:
 
 permissions: {}
 
+# CI-002
+concurrency:
+  group: ${{ format('{0}-{1}', github.workflow, github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'workflow_dispatch' }}
+
 jobs:
   mobsf:
     runs-on: ubuntu-24.04
