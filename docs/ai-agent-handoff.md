@@ -5,16 +5,16 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | <https://github.com/pirlruc/androiddevops> (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Tag **1.4.0** publishes `android-maestro` to GHCR. Tag **1.3.0** installs caller `sdk_packages`. Tag **1.2.0** fails closed without a keystore. Do not move `1.0.0` through `1.3.0`. |
+| **Branch** | `main`. Published tip is **1.9.0**. `android-maestro` publishes to GHCR. Maestro publish still pins containerdevops 6.5.0 (`b8c07466`). |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
 
 | Component | Ref |
 | --- | --- |
-| guardrails | tag **1.15.0** → `2d4bb70e95449f6922781716857adeb22badf676` |
-| github-scaffold | tag **1.12.0** → `9c443ea978851768f451b1df2020dd86dfb1a967` |
-| commondevops | tag **6.1.0** → `2c5e1ebe9797828128e01f3941b5a02650abe59a` |
+| guardrails | tag **1.17.0** → `9a17ebb269a5ab02899570dd3e40fb72e50ad762` |
+| github-scaffold | tag **1.14.0** → `da8942edf17a0d2736d297c90338fd78b7ec31fb` |
+| commondevops | `c7751385f74edcf7f4ce1e64b408f225a38d9416` |
 | containerdevops | tag **6.5.0** → `b8c0746603eefdc89571b17c62d1e965b28ff31f` |
 | ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
@@ -81,6 +81,8 @@ published digest from the 1.4.0 release workflow:
 *Last updated: 2026-11-07 — 1.6.0. Temurin 25 Maestro image. mcp 2.3.0. commondevops 6.1.0. containerdevops 6.5.0. SC-SIGN-001 stays because a Release has no separate binary.*
 
 *Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*
+
+*Last updated: 2026-11-23 — 1.9.0. Guardrails 1.17.0. Scaffold 1.14.0. Maestro publish still pins containerdevops 6.5.0.*
 
 *Last updated: 2026-11-21 — `android-gradle-ci` can clone a pinned vcpkg and cache binaries by triplet. The registry token stays in the job environment.*
 
