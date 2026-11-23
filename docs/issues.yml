@@ -44,7 +44,7 @@ milestones:
               - CI-018
 
       - id: AND-002
-        status: open
+        status: deferred
         title: Callers other than mat-aventuras adopt the reusable workflows
         overview:
           problem: >-
@@ -393,7 +393,7 @@ milestones:
     status: open
     epics:
       - id: AND-VCPKG-001
-        status: open
+        status: done
         title: Give Gradle CI a vcpkg checkout
         overview:
           problem: >-
@@ -413,7 +413,7 @@ milestones:
           - a registry token is not written to the runner git config
         tasks:
           - id: AND-VCPKG-001-T1
-            status: open
+            status: done
             title: Add the vcpkg inputs and the cache
             instructions:
               files:

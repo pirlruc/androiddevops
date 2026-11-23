@@ -3,7 +3,7 @@
 Reusable GitHub Actions workflows for Android builds, scans, emulator tests, and signed APKs.
 
 Pin every `uses:` to a **commit SHA**. Pass that same SHA as `scripts_ref`.
-A private caller also passes `checkout_token`. The current tag is **1.4.0**.
+A private caller also passes `checkout_token`. The current tag is **1.8.0**. The next release is 1.9.0.
 Use the commit that tag points at:
 
 ```yaml
@@ -56,7 +56,7 @@ docker run --rm --add-host=host.docker.internal:host-gateway \
 ```
 
 Pin `ghcr.io/pirlruc/android-maestro@sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da`.
-Tag `1.4.0` points at that digest. Do not install Maestro on the host.
+Tag `1.8.0` points at that digest. Do not install Maestro on the host.
 [finsilo](https://github.com/pirlruc/finsilo) still inlines its Android jobs.
 
 ## Workflows
