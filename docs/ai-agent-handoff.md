@@ -50,7 +50,11 @@ remaining entries lower a number. Dependabot
 `registries:` in `.github/dependabot.yml` is active.
 
 Actions access on `ci-lint` and `ci-supply-chain` is granted for this repo.
-Own CI pulls `ci-lint` only.
+`scripts/check-ci-docker.sh` pulls `ci-lint`. The DevOps CI job container is
+`ghcr.io/catthehacker/ubuntu:act-24.04`, because `ci-lint` 6.8.0 has no gzip
+and `actions/checkout` cannot unpack. The default-branch ruleset requires a
+check named `pins`. `ops-repo-ci` reports that job as `ops-ci / pins / pins`,
+so `devops-ci.yml` keeps a `pins` job that needs `ops-ci`.
 
 ## Commands
 
@@ -73,20 +77,4 @@ published digest from the 1.10.0 release:
 | --- | --- |
 | android-maestro 1.10.0 linux/amd64 | `sha256:b11c589ebfcb9b518074d8b9d0974cd8e225562d24c8d046df009c5c51f174e0` |
 
-*Last updated: 2026-11-24 — 1.11.0. Self-CI calls ops-repo-ci from commondevops v6.10.0. AND-002 stays open and deferred. Dependabot registries are active.*
-
-*Last updated: 2026-11-24 — 1.10.0. Callers pin commondevops v6.9.0 and containerdevops 6.8.0. Tool downloads use `fetch-verified.sh`.*
-
-*Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
-
-*Last updated: 2026-11-04 — filed documentation follow-up epics moved out of guardrails, methodologies, or github-scaffold. Not implemented here.*
-
-*Last updated: 2026-11-07 — 1.6.0. Temurin 25 Maestro image. mcp 2.3.0. commondevops 6.1.0. containerdevops 6.5.0. SC-SIGN-001 stays because a Release has no separate binary.*
-
-*Last updated: 2026-11-07 — default-branch ruleset requires pins and scaffold / verify. CI-032 is retired. Scorecard policy is docs/scorecard-open-checks.md.*
-
-*Last updated: 2026-11-23 — 1.9.0. Guardrails 1.17.0. Scaffold 1.14.0. Maestro publish still pins containerdevops 6.5.0.*
-
-*Last updated: 2026-11-21 — `android-gradle-ci` can clone a pinned vcpkg and cache binaries by triplet. The registry token stays in the job environment.*
-
-*Last updated: 2026-11-18 — `android-gradle-ci` takes `runs_on`. The default stays `ubuntu-24.04`. A caller passes a JSON label array for a self-hosted runner. The job installs `unzip` when it is missing, and skips `sudo` when the job is already root.*
+*Last updated: 2026-11-24 — 1.11.0. Self-CI calls ops-repo-ci from commondevops v6.10.0 in the act image. A pins job satisfies the ruleset. AND-002 stays open and deferred. Dependabot registries are active.*

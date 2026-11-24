@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Self-CI calls `ops-repo-ci` from commondevops v6.10.0. A Friday schedule runs the same reusable with Scorecard.
+- Self-CI calls `ops-repo-ci` from commondevops v6.10.0. A `pins` job keeps the ruleset check name. A Friday schedule runs the same reusable with Scorecard.
 - Maestro builds on the current Temurin 25 manifests. The mobsfscan lock keeps semgrep 1.186.0 and moves wcmatch to 12.0.4.
 - Downloads retry. The security page links to the advisory form.
 
