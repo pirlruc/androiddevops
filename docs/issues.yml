@@ -470,3 +470,27 @@ milestones:
                 - scripts/emulator-run.sh
             verification:
               - rg -n maestro_flows .github/workflows/android-emulator.yml
+      - id: AND-SBOM-001
+        status: done
+        title: Give the APK bill the verified download helper
+        overview:
+          problem: run-osv-sbom.sh exits when COMMONDEVOPS_SCRIPTS is unset.
+          goal: The release and debug bill jobs check out fetch-verified.sh.
+        decision: >-
+          In the context of an APK CycloneDX bill, facing a helper that
+          lives in commondevops, we decided the reusable job checks that
+          helper out, to achieve one download path, accepting a pin to
+          commondevops v6.11.0.
+        acceptance_criteria:
+          - android-release-apk.yml sets COMMONDEVOPS_SCRIPTS when sbom is true
+          - android-apk-sbom.yml sets COMMONDEVOPS_SCRIPTS
+        tasks:
+          - id: AND-SBOM-001-T1
+            status: done
+            title: Check out fetch-verified.sh before the bill
+            instructions:
+              files:
+                - .github/workflows/android-release-apk.yml
+                - .github/workflows/android-apk-sbom.yml
+            verification:
+              - rg -n COMMONDEVOPS_SCRIPTS .github/workflows/android-release-apk.yml .github/workflows/android-apk-sbom.yml

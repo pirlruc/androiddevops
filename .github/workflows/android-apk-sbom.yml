@@ -73,6 +73,17 @@ jobs:
             scripts
           sparse-checkout-cone-mode: false
 
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/commondevops
+          ref: 9350e95cbb130219be113d8737469cd7c39f155c # v6.11.0
+          token: ${{ secrets.checkout_token || github.token }}
+          persist-credentials: false
+          path: .commondevops
+          sparse-checkout: |
+            scripts/fetch-verified.sh
+          sparse-checkout-cone-mode: false
+
       - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
@@ -92,6 +103,7 @@ jobs:
         env:
           APK_PATH: ${{ inputs.apk_path }}
           GRADLE_CONFIGURATION: ${{ inputs.gradle_configuration }}
+          COMMONDEVOPS_SCRIPTS: ${{ github.workspace }}/.commondevops/scripts
         run: |
           set -euo pipefail
           export DEPS_FILE="${RUNNER_TEMP}/runtime-classpath.txt"
