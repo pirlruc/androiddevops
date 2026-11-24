@@ -25,10 +25,16 @@ SBOM="${WORKDIR}/app.cdx.json"
 SARIF="${WORKDIR}/osv.sarif"
 
 install_osv() {
-	local url
+	local url helper
+	helper="${COMMONDEVOPS_SCRIPTS:-}/fetch-verified.sh"
+	if [[ ! -f $helper ]]; then
+		echo "error: COMMONDEVOPS_SCRIPTS must contain fetch-verified.sh" >&2
+		exit 1
+	fi
+	# shellcheck disable=SC1090,SC1091
+	source "$helper"
 	url="https://github.com/google/osv-scanner/releases/download/v${OSV_VERSION}/osv-scanner_linux_amd64"
-	curl -fsSL --retry 5 --retry-delay 2 -o "$OSV" "$url"
-	echo "${OSV_SHA256}  ${OSV}" | sha256sum -c -
+	fetch_verified "$url" "$OSV" "$OSV_SHA256"
 	chmod +x "$OSV"
 }
 

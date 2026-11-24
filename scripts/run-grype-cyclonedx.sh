@@ -15,9 +15,16 @@ GRYPE="${WORKDIR}/grype"
 ARCHIVE="${WORKDIR}/grype.tgz"
 
 if [[ ! -x $GRYPE ]]; then
-	curl -fsSL --retry 5 --retry-delay 2 -o "$ARCHIVE" \
-		"https://github.com/anchore/grype/releases/download/v${VERSION}/grype_${VERSION}_linux_amd64.tar.gz"
-	echo "${SHA256}  ${ARCHIVE}" | sha256sum -c -
+	helper="${COMMONDEVOPS_SCRIPTS:-}/fetch-verified.sh"
+	if [[ ! -f $helper ]]; then
+		echo "error: COMMONDEVOPS_SCRIPTS must contain fetch-verified.sh" >&2
+		exit 1
+	fi
+	# shellcheck disable=SC1090,SC1091
+	source "$helper"
+	fetch_verified \
+		"https://github.com/anchore/grype/releases/download/v${VERSION}/grype_${VERSION}_linux_amd64.tar.gz" \
+		"$ARCHIVE" "$SHA256"
 	tar -xzf "$ARCHIVE" -C "$WORKDIR" grype
 	chmod +x "$GRYPE"
 fi
