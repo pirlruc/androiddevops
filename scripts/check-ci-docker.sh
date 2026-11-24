@@ -1,6 +1,6 @@
 #!/bin/sh
 # Run CI steps missing on the host inside ci-lint.
-# POSIX sh. The image digest matches commondevops ci-lint (5.8.0 callers).
+# POSIX sh. The image digest is ci-lint 6.8.0 Debian, which has bash.
 #
 # Env:
 #   ADO_CI_IMAGE     — override the image (digest pin by default)
@@ -12,7 +12,7 @@ set -eu
 SCRIPT_DIR="$(dirname "$0")"
 SCRIPT_DIR="$(cd "${SCRIPT_DIR}" && pwd)"
 ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-IMAGE="${ADO_CI_IMAGE:-ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111}"
+IMAGE="${ADO_CI_IMAGE:-ghcr.io/pirlruc/ci-lint@sha256:3ed6d8dcbb08abf82e563630f2c1218cf0e8f33bb883ed46770e147113af48b0}"
 
 if [ -z "${ADO_DOCKER_STEPS:-}" ]; then
 	echo "ADO_DOCKER_STEPS is required (e.g. shfmt ruff zizmor)" >&2

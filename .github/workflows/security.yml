@@ -1,0 +1,31 @@
+name: Security
+
+on:
+  schedule:
+    - cron: "17 6 * * 5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      security-events: write
+      id-token: write
+    uses: pirlruc/commondevops/.github/workflows/ops-repo-ci.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
+    with:
+      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      shell_scripts: scripts/*.sh
+      # ci-lint 6.8.0 and the previous digest have no gzip, so checkout cannot unpack.
+      container_image: ghcr.io/catthehacker/ubuntu:act-24.04@sha256:dff4ec57d90046a7283aafc314298380be82bfeccb9ad0f1b36c4ebe74aabe78
+      mount_runner_git: false
+      install_runner_packages: true
+    secrets:
+      repo_token: ${{ secrets.SCORECARD_TOKEN }}

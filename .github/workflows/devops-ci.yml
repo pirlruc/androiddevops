@@ -15,34 +15,40 @@ concurrency:
 permissions: {}
 
 jobs:
+  ops-ci:
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      security-events: write
+      id-token: write
+    uses: pirlruc/commondevops/.github/workflows/ops-repo-ci.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
+    with:
+      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      shell_scripts: scripts/*.sh
+      # ci-lint 6.8.0 and the previous digest have no gzip, so checkout cannot unpack.
+      container_image: ghcr.io/catthehacker/ubuntu:act-24.04@sha256:dff4ec57d90046a7283aafc314298380be82bfeccb9ad0f1b36c4ebe74aabe78
+      mount_runner_git: false
+      install_runner_packages: true
+    secrets:
+      repo_token: ${{ secrets.SCORECARD_TOKEN }}
+
+  # The default-branch ruleset requires a check named pins. The reusable
+  # reports that job as ops-ci / pins / pins, which does not satisfy it.
   pins:
+    needs: ops-ci
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Submodule pins
-        run: sh scripts/check-submodule-pins.sh
-
-  infra-lint:
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
-    permissions:
-      contents: read
-      packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
-    with:
-      blocking: true
-      run_shfmt: true
-      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
-      container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
+      - name: Record the reusable pins result
+        run: echo "ops-repo-ci pins passed"
 
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f
     with:
       blocking: true
       shell_scripts: scripts/*.sh
@@ -52,50 +58,19 @@ jobs:
       yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
-      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
+      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f
     with:
       blocking: true
-      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
+      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
     secrets:
       packs_token: ${{ secrets.GUARDRAILS_READ_TOKEN }}
-
-  secrets-sast:
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
-    permissions:
-      contents: read
-      packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
-    with:
-      blocking: true
-      working_directory: .
-      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
-      container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
-
-  security-aggregate:
-    if: always()
-    needs: [secrets-sast]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    steps:
-      - name: Fail when a security job failed
-        env:
-          SECRETS: ${{ needs.secrets-sast.result }}
-        run: |
-          set -eu
-          if [ "${SECRETS}" != "success" ] && [ "${SECRETS}" != "skipped" ]; then
-            echo "::error::secrets-sast ${SECRETS}"
-            exit 1
-          fi
-          echo "Security aggregate passed."
 
   actionlint:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
@@ -110,7 +85,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: pirlruc/commondevops
-          ref: e49b2719982f492d6da04b20ee1a8f55c9b6b970 # v6.9.1
+          ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
           persist-credentials: false
           path: .commondevops
           sparse-checkout: |

@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-11-24
+
+### Changed
+
+- Self-CI calls `ops-repo-ci` from commondevops v6.10.0. A `pins` job keeps the ruleset check name. A Friday schedule runs the same reusable with Scorecard.
+- Maestro builds on the current Temurin 25 manifests. The mobsfscan lock keeps semgrep 1.186.0 and moves wcmatch to 12.0.4.
+- Downloads retry. The security page links to the advisory form.
+
 ## [1.10.0] - 2026-11-24
 
 ### Fixed

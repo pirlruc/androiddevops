@@ -33,7 +33,7 @@ if command -v shfmt >/dev/null 2>&1; then
 	shfmt -d scripts/*.sh
 else
 	shfmt_bin="$(mktemp)"
-	curl -sSfL -o "${shfmt_bin}" \
+	curl -sSfL --retry 5 --retry-delay 2 -o "${shfmt_bin}" \
 		https://github.com/mvdan/sh/releases/download/v3.11.0/shfmt_v3.11.0_linux_amd64
 	echo "1904ec6bac715c1d05cd7f6612eec8f67a625c3749cb327e5bfb4127d09035ff  ${shfmt_bin}" | sha256sum -c
 	chmod +x "${shfmt_bin}"
@@ -70,7 +70,7 @@ if [ -f docker/android-maestro/Dockerfile ]; then
 	fi
 	docker build -t android-maestro:local docker/android-maestro
 	cst_bin="$(mktemp)"
-	curl -sSfL -o "${cst_bin}" \
+	curl -sSfL --retry 5 --retry-delay 2 -o "${cst_bin}" \
 		https://github.com/GoogleContainerTools/container-structure-test/releases/download/v1.19.3/container-structure-test-linux-amd64
 	echo "fa0fa333bb6ba5c14065e7468d2904f5c82d021d7e1c763c9a45c5f2fbe9ff5f  ${cst_bin}" | sha256sum -c
 	chmod +x "${cst_bin}"

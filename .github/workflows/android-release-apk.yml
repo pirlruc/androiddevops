@@ -103,7 +103,7 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
           java-version: ${{ inputs.java_version }}
@@ -173,24 +173,12 @@ jobs:
             scripts
           sparse-checkout-cone-mode: false
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        if: inputs.sbom
-        with:
-          repository: pirlruc/commondevops
-          ref: e49b2719982f492d6da04b20ee1a8f55c9b6b970 # v6.9.1
-          persist-credentials: false
-          path: .commondevops
-          sparse-checkout: |
-            scripts/fetch-verified.sh
-          sparse-checkout-cone-mode: false
-
       - name: Release CycloneDX bill
         if: inputs.sbom
         env:
           GRADLE_CONFIGURATION: ${{ inputs.gradle_configuration }}
           SBOM_NAME: ${{ inputs.sbom_name }}
           ALLOW_UNSIGNED: ${{ inputs.allow_unsigned }}
-          COMMONDEVOPS_SCRIPTS: ${{ github.workspace }}/.commondevops/scripts
         run: |
           set -euo pipefail
           if [[ "${ALLOW_UNSIGNED}" == "true" ]]; then
