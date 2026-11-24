@@ -77,4 +77,4 @@ published digest from the 1.10.0 release:
 | --- | --- |
 | android-maestro 1.10.0 linux/amd64 | `sha256:b11c589ebfcb9b518074d8b9d0974cd8e225562d24c8d046df009c5c51f174e0` |
 
-*Last updated: 2026-11-24 — 1.12.0 adds android-jvm-fuzz and an optional maestro_flows input. The APK bill workflows now check out fetch-verified.sh (AND-SBOM-001). AND-002 stays open and deferred.*
+*Last updated: 2026-11-24 — 1.12.1 is [published](https://github.com/pirlruc/androiddevops/releases/tag/1.12.1). The APK bill workflows check out fetch-verified.sh (AND-SBOM-001, epic #72, task #73, closed). 1.12.0 stays. Do not move it. AND-002 stays open and deferred.*
