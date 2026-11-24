@@ -20,7 +20,7 @@ if [[ ! -x $GRYPE ]]; then
 		echo "error: COMMONDEVOPS_SCRIPTS must contain fetch-verified.sh" >&2
 		exit 1
 	fi
-	# shellcheck disable=SC1091
+	# shellcheck disable=SC1090,SC1091
 	source "$helper"
 	fetch_verified \
 		"https://github.com/anchore/grype/releases/download/v${VERSION}/grype_${VERSION}_linux_amd64.tar.gz" \

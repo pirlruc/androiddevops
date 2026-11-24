@@ -31,7 +31,7 @@ install_osv() {
 		echo "error: COMMONDEVOPS_SCRIPTS must contain fetch-verified.sh" >&2
 		exit 1
 	fi
-	# shellcheck disable=SC1091
+	# shellcheck disable=SC1090,SC1091
 	source "$helper"
 	url="https://github.com/google/osv-scanner/releases/download/v${OSV_VERSION}/osv-scanner_linux_amd64"
 	fetch_verified "$url" "$OSV" "$OSV_SHA256"

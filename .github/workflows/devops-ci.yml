@@ -121,7 +121,7 @@ jobs:
           COMMONDEVOPS_SCRIPTS: ${{ github.workspace }}/.commondevops/scripts
         run: |
           set -euo pipefail
-          # shellcheck disable=SC1091
+          # shellcheck disable=SC1090,SC1091
           source "${COMMONDEVOPS_SCRIPTS}/fetch-verified.sh"
           fetch_verified \
             https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
