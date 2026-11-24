@@ -420,3 +420,53 @@ milestones:
                 - .github/workflows/android-gradle-ci.yml
             verification:
               - rg -n enable_vcpkg .github/workflows/android-gradle-ci.yml
+
+  - name: Fuzz and device flows
+    status: open
+    epics:
+      - id: AND-FUZZ-001
+        status: done
+        title: Run JVM fuzz from a reusable workflow
+        overview:
+          problem: Callers copy a Gradle fuzz job that only differs by the test selector.
+          goal: One reusable job that exports an iteration count and runs the caller selector.
+        decision: >-
+          In the context of seeded JVM fuzz, facing a copied Gradle job,
+          we decided one reusable workflow, to achieve one Java and Gradle
+          pin, accepting that the caller names the test selector.
+        acceptance_criteria:
+          - android-jvm-fuzz.yml is workflow_call
+          - fuzz_iterations must be digits
+        tasks:
+          - id: AND-FUZZ-001-T1
+            status: done
+            title: Add the JVM fuzz reusable
+            instructions:
+              files:
+                - .github/workflows/android-jvm-fuzz.yml
+            verification:
+              - actionlint .github/workflows/android-jvm-fuzz.yml
+      - id: AND-MAESTRO-001
+        status: done
+        title: Let the emulator job run Maestro when asked
+        overview:
+          problem: A monthly emulator run cannot execute Maestro flows without a second workflow.
+          goal: An optional flows directory runs after the caller script, from a digest-pinned image.
+        decision: >-
+          In the context of a scheduled emulator run, facing flows that
+          only exist on the caller, we decided an optional maestro_flows
+          input, to achieve one boot for tests and flows, accepting that
+          the default stays empty.
+        acceptance_criteria:
+          - maestro_flows defaults to empty
+          - a set value requires the android-maestro image by digest
+        tasks:
+          - id: AND-MAESTRO-001-T1
+            status: done
+            title: Pass Maestro into the emulator script
+            instructions:
+              files:
+                - .github/workflows/android-emulator.yml
+                - scripts/emulator-run.sh
+            verification:
+              - rg -n maestro_flows .github/workflows/android-emulator.yml

@@ -1,0 +1,93 @@
+name: Android JVM fuzz (reusable)
+
+# Seeded JVM fuzz on a schedule or workflow_dispatch. Callers pass the Gradle
+# test selector. This is not an emulator job and it does not sign an APK.
+
+on:
+  workflow_call:
+    inputs:
+      gradle_args:
+        description: Arguments after gradlew, for example :domain:test --tests *.FuzzTest
+        required: true
+        type: string
+      java_version:
+        description: Temurin JDK major version
+        required: false
+        type: string
+        default: "21"
+      fuzz_iterations:
+        description: Exported as FUZZ_ITERATIONS for the test process
+        required: false
+        type: string
+        default: "200"
+      runs_on:
+        description: JSON value for runs-on. The default is a versioned hosted label.
+        required: false
+        type: string
+        default: '"ubuntu-24.04"'
+  workflow_dispatch:
+    inputs:
+      gradle_args:
+        description: Arguments after gradlew
+        required: true
+        type: string
+      java_version:
+        type: string
+        default: "21"
+      fuzz_iterations:
+        type: string
+        default: "200"
+      runs_on:
+        type: string
+        default: '"ubuntu-24.04"'
+
+permissions: {}
+
+concurrency:
+  group: >-
+    ${{ github.event_name == 'workflow_dispatch' && github.workflow == 'Android JVM fuzz (reusable)'
+        && format('dispatch-{0}-{1}', github.workflow, github.ref)
+        || format('call-jvm-fuzz-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'workflow_dispatch' && github.workflow == 'Android JVM fuzz (reusable)' }}
+
+jobs:
+  fuzz:
+    runs-on: ${{ fromJSON(inputs.runs_on) }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Require digits for the iteration count
+        env:
+          ITERATIONS: ${{ inputs.fuzz_iterations }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${ITERATIONS}" =~ ^[0-9]+$ ]]; then
+            echo "::error::fuzz_iterations must be digits"
+            exit 1
+          fi
+
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java_version }}
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - name: Run the fuzz tests
+        env:
+          FUZZ_ITERATIONS: ${{ inputs.fuzz_iterations }}
+          GRADLE_ARGS: ${{ inputs.gradle_args }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${GRADLE_ARGS}" =~ ^[A-Za-z0-9:._\ *,-]+$ ]]; then
+            echo "::error::gradle_args has a character this job does not pass to Gradle"
+            exit 1
+          fi
+          # shellcheck disable=SC2086
+          ./gradlew --no-daemon ${GRADLE_ARGS}
