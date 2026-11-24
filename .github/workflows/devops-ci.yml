@@ -26,6 +26,8 @@ jobs:
     with:
       scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
       shell_scripts: scripts/*.sh
+      # ci-lint 6.8.0 has no gzip, so actions/checkout cannot unpack.
+      container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
     secrets:
       repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
