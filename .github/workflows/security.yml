@@ -1,0 +1,27 @@
+name: Security
+
+on:
+  schedule:
+    - cron: "17 6 * * 5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      security-events: write
+      id-token: write
+    uses: pirlruc/commondevops/.github/workflows/ops-repo-ci.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
+    with:
+      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      shell_scripts: scripts/*.sh
+    secrets:
+      repo_token: ${{ secrets.SCORECARD_TOKEN }}

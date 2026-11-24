@@ -12,11 +12,11 @@
 
 | Component | Ref |
 | --- | --- |
-| guardrails | tag **1.17.0** → `9a17ebb269a5ab02899570dd3e40fb72e50ad762` |
-| github-scaffold | tag **1.14.0** → `da8942edf17a0d2736d297c90338fd78b7ec31fb` |
-| commondevops | v6.9.0 `5d8b83da2f8f0c0c1bd894ef920619fe127c033e`. SBOM and actionlint downloads source `fetch-verified.sh` from v6.9.1. |
+| guardrails | tag **1.17.1** → `8508e93691aa3c4f769ecc215ddc83ecf26e70b2` |
+| github-scaffold | tag **1.14.2** → `615dbbcbe906d62a29e4f4e4118cb94cb119f5a5` |
+| commondevops | v6.10.0 `a2af891c6d05fe2790bc5ddf761252c95185ce5f` |
 | containerdevops | tag **6.8.0** → `ae9dbee9e4537bd3a0b533de3bad011cb44b201e` |
-| ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
+| ci-lint (Actions amd64) | `6.8.0` `sha256:3ed6d8dcbb08abf82e563630f2c1218cf0e8f33bb883ed46770e147113af48b0` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
 
 ## Delivery status
@@ -24,10 +24,10 @@
 | Epic | Status |
 | --- | --- |
 | AND-001 reusable workflows | done on the 1.0.0 branch |
-| AND-002 finsilo and heimdall adoption | open. finsilo stays on its inline jobs. heimdall calls `android-gradle-ci.yml` at 1.3.0 (`a41e029`, merge `d11d939`) and passes `checkout_token`. |
+| AND-002 finsilo and heimdall adoption | deferred, still open. finsilo stays on its inline jobs. heimdall calls `android-gradle-ci.yml` at 1.3.0 (`a41e029`, merge `d11d939`) and passes `checkout_token`. |
 | AND-003 fail closed and emulator boot | done on the 1.2.0 branch |
 | AND-004 runner SDK packages | done on the 1.3.0 branch. No Android SDK image. |
-| AND-005 Maestro image | done. GHCR digest `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da`. Doksi and Arbigent are not images here: Doksi is a paid cloud service, and Arbigent was skipped. |
+| AND-005 Maestro image | done. 1.10.0 linux/amd64 `sha256:b11c589ebfcb9b518074d8b9d0974cd8e225562d24c8d046df009c5c51f174e0`. Doksi and Arbigent are not images here: Doksi is a paid cloud service, and Arbigent was skipped. |
 
 ## Private later
 
@@ -47,8 +47,7 @@ while commondevops is public.
 CI-032 is retired. The repo is public. REL-PUB-004 is retired:
 callers pass `environment` and this repo has no publish token. None of the
 remaining entries lower a number. Dependabot
-`registries: github-private` stays commented until `DEPENDABOT_GITHUB_TOKEN`
-exists as a Dependabot secret.
+`registries:` in `.github/dependabot.yml` is active.
 
 Actions access on `ci-lint` and `ci-supply-chain` is granted for this repo.
 Own CI pulls `ci-lint` only.
@@ -68,11 +67,13 @@ The Maestro image is `docker/android-maestro`. Local CI builds
 findings in the pinned CLI zip are listed in
 `docker/android-maestro/.trivyignore.yaml` and `.grype.yaml`
 (DOCKER-SEC-001). Do not drop those ids to make a scan pass. The
-published digest from the 1.4.0 release workflow:
+published digest from the 1.10.0 release:
 
 | Image | Digest |
 | --- | --- |
-| android-maestro 1.4.0 | `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da` |
+| android-maestro 1.10.0 linux/amd64 | `sha256:b11c589ebfcb9b518074d8b9d0974cd8e225562d24c8d046df009c5c51f174e0` |
+
+*Last updated: 2026-11-24 — 1.11.0. Self-CI calls ops-repo-ci from commondevops v6.10.0. AND-002 stays open and deferred. Dependabot registries are active.*
 
 *Last updated: 2026-11-24 — 1.10.0. Callers pin commondevops v6.9.0 and containerdevops 6.8.0. Tool downloads use `fetch-verified.sh`.*
 
