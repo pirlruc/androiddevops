@@ -5,6 +5,19 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-11-24
+
+### Fixed
+
+- Reusable concurrency groups use the caller ref. A group that included `github.run_id` never cancelled a superseded run (CI-002).
+- The Maestro publish passes `image_documentation` and `image_url`, and the digest job checks out commondevops v6.9.0 (DOCKER-DOC-001).
+- Tool downloads retry a transport failure (CI-054).
+
+### Changed
+
+- Maestro image jobs pin containerdevops 6.8.0. Self-CI pins commondevops v6.9.0.
+- Docs name tag 1.10.0 and the `runs_on`, `guardrail_checks`, and vcpkg inputs.
+
 ## [1.9.0] - 2026-11-23
 
 ### Added

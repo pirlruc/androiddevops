@@ -7,9 +7,9 @@ contents:read token after it is private.
 A public caller cannot call these workflows once this repository is private.
 Copy the workflow file at the pinned tag into the caller instead.
 
-Tag 1.4.0 is the current release. Replace `<sha>` below with the commit that
+Tag 1.10.0 is the current release. Replace `<sha>` below with the commit that
 tag points at, and pass the same value as `scripts_ref`. Do not move
-`1.0.0` through `1.3.0`.
+`1.0.0` through `1.9.0`.
 
 ```yaml
 jobs:
@@ -35,7 +35,13 @@ optional secret `checkout_token`.
 | `validate_wrapper` | `true` | Run wrapper validation before Gradle |
 | `upload_apk` | `false` | Upload `apk_path` as `artifact_name` for one day |
 | `apk_path` | `app/build/outputs/apk/debug/app-debug.apk` | APK to upload |
-| `artifact_name` | `android-apk` | Artifact name |
+| `artifact_name` | `android-debug-apk` | Artifact name |
+| `runs_on` | `"ubuntu-24.04"` | JSON value for `runs-on` |
+| `guardrail_checks` | `false` | Run the Kotlin and Android guardrail scripts after Gradle |
+| `enable_vcpkg` | `false` | Clone vcpkg and export `VCPKG_ROOT` before Gradle |
+| `vcpkg_commit` | a pinned commit | Used when `enable_vcpkg` is true |
+| `vcpkg_triplet` | empty | Binary-cache triplet. Empty uses the host |
+| `registry_token` | secret | contents:read on a private vcpkg git registry |
 | `sdk_packages` | empty | Packages for `sdkmanager`, split on spaces and newlines. Empty skips the install. The job stays on the GitHub runner. There is no Android SDK image. |
 | `cache_path` | empty | Newline-separated paths for `actions/cache`. Empty skips the cache. |
 | `cache_key` | empty | Required when `cache_path` is set |
@@ -136,5 +142,6 @@ when a GitHub Release is published.
 | `publish` | `false` | `workflow_dispatch` only. Also pushes the image |
 
 The release event publishes without that input. Docker Hub is skipped.
-`containerdevops` is pinned at tag 6.3.6 (`b419c24c`). The image is
-linux/amd64. The publish job signs it when this repository is public.
+`containerdevops` is pinned at tag 6.8.0 (`ae9dbee`). The image is
+linux/amd64. The publish job signs it when this repository is public and
+sets `image_documentation` and `image_url`.

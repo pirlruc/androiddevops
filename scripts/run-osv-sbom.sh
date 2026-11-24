@@ -27,7 +27,7 @@ SARIF="${WORKDIR}/osv.sarif"
 install_osv() {
 	local url
 	url="https://github.com/google/osv-scanner/releases/download/v${OSV_VERSION}/osv-scanner_linux_amd64"
-	curl -fsSL -o "$OSV" "$url"
+	curl -fsSL --retry 5 --retry-delay 2 -o "$OSV" "$url"
 	echo "${OSV_SHA256}  ${OSV}" | sha256sum -c -
 	chmod +x "$OSV"
 }

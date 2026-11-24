@@ -32,17 +32,17 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
+    uses: pirlruc/commondevops/.github/workflows/common-infra-lint.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
     with:
       blocking: true
       run_shfmt: true
-      scripts_ref: c7751385f74edcf7f4ce1e64b408f225a38d9416
+      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
 
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
     with:
       blocking: true
       shell_scripts: scripts/*.sh
@@ -52,17 +52,17 @@ jobs:
       yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
-      scripts_ref: c7751385f74edcf7f4ce1e64b408f225a38d9416
+      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
     with:
       blocking: true
-      scripts_ref: c7751385f74edcf7f4ce1e64b408f225a38d9416
+      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
     secrets:
       packs_token: ${{ secrets.GUARDRAILS_READ_TOKEN }}
 
@@ -71,11 +71,11 @@ jobs:
     permissions:
       contents: read
       packages: read
-    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@c7751385f74edcf7f4ce1e64b408f225a38d9416
+    uses: pirlruc/commondevops/.github/workflows/common-secrets-sast.yml@5d8b83da2f8f0c0c1bd894ef920619fe127c033e
     with:
       blocking: true
       working_directory: .
-      scripts_ref: c7751385f74edcf7f4ce1e64b408f225a38d9416
+      scripts_ref: 5d8b83da2f8f0c0c1bd894ef920619fe127c033e
       container_image: ghcr.io/pirlruc/ci-lint@sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111
 
   security-aggregate:
@@ -110,7 +110,7 @@ jobs:
       - name: Token-free actionlint and zizmor
         run: |
           set -euo pipefail
-          curl -sSfL -o /tmp/actionlint.tgz \
+          curl -sSfL --retry 5 --retry-delay 2 -o /tmp/actionlint.tgz \
             https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
           echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tgz" | sha256sum -c
           tar -xzf /tmp/actionlint.tgz -C /tmp actionlint
