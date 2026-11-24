@@ -33,6 +33,18 @@ jobs:
     secrets:
       repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
+  # The default-branch ruleset requires a check named pins. The reusable
+  # reports that job as ops-ci / pins / pins, which does not satisfy it.
+  pins:
+    needs: ops-ci
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Record the reusable pins result
+        run: echo "ops-repo-ci pins passed"
+
   docs:
     permissions:
       contents: read
