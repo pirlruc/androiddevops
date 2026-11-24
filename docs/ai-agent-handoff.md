@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | **Remote** | <https://github.com/pirlruc/androiddevops> (public). The owner can set the repo private. Do not change visibility from an agent session. |
-| **Branch** | `main`. Published tip is **1.9.0**. `android-maestro` publishes to GHCR. Maestro publish still pins containerdevops 6.5.0 (`b8c07466`). |
+| **Branch** | `main`. Published tip is **1.10.0** (`0e3d9e2c081a0d583b77b11e333f0fccb261e50c`). `android-maestro` publishes to GHCR. |
 | **Role** | Reusable GitHub Actions for Android Gradle callers |
 
 ## Pins
@@ -14,8 +14,8 @@
 | --- | --- |
 | guardrails | tag **1.17.0** → `9a17ebb269a5ab02899570dd3e40fb72e50ad762` |
 | github-scaffold | tag **1.14.0** → `da8942edf17a0d2736d297c90338fd78b7ec31fb` |
-| commondevops | `c7751385f74edcf7f4ce1e64b408f225a38d9416` |
-| containerdevops | tag **6.5.0** → `b8c0746603eefdc89571b17c62d1e965b28ff31f` |
+| commondevops | v6.9.0 `5d8b83da2f8f0c0c1bd894ef920619fe127c033e`. SBOM and actionlint downloads source `fetch-verified.sh` from v6.9.1. |
+| containerdevops | tag **6.8.0** → `ae9dbee9e4537bd3a0b533de3bad011cb44b201e` |
 | ci-lint (Actions amd64) | `sha256:f9001c4c8726f72107545094237d4fc0592baca023cfa299a532634666d88111` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
 
@@ -73,6 +73,8 @@ published digest from the 1.4.0 release workflow:
 | Image | Digest |
 | --- | --- |
 | android-maestro 1.4.0 | `sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da` |
+
+*Last updated: 2026-11-24 — 1.10.0. Callers pin commondevops v6.9.0 and containerdevops 6.8.0. Tool downloads use `fetch-verified.sh`.*
 
 *Last updated: 2026-11-03 (1.4.0 Maestro digest recorded).*
 

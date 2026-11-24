@@ -107,12 +107,26 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pirlruc/commondevops
+          ref: e49b2719982f492d6da04b20ee1a8f55c9b6b970 # v6.9.1
+          persist-credentials: false
+          path: .commondevops
+          sparse-checkout: |
+            scripts/fetch-verified.sh
+          sparse-checkout-cone-mode: false
       - name: Token-free actionlint and zizmor
+        env:
+          COMMONDEVOPS_SCRIPTS: ${{ github.workspace }}/.commondevops/scripts
         run: |
           set -euo pipefail
-          curl -sSfL --retry 5 --retry-delay 2 -o /tmp/actionlint.tgz \
-            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
-          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tgz" | sha256sum -c
+          # shellcheck disable=SC1091
+          source "${COMMONDEVOPS_SCRIPTS}/fetch-verified.sh"
+          fetch_verified \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            /tmp/actionlint.tgz \
+            8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
           tar -xzf /tmp/actionlint.tgz -C /tmp actionlint
           /tmp/actionlint .github/workflows/*.yml
           python3 -m venv /tmp/zizmor-venv
