@@ -77,4 +77,4 @@ published digest from the 1.10.0 release:
 | --- | --- |
 | android-maestro 1.10.0 linux/amd64 | `sha256:b11c589ebfcb9b518074d8b9d0974cd8e225562d24c8d046df009c5c51f174e0` |
 
-*Last updated: 2026-11-24 — 1.11.0. Self-CI calls ops-repo-ci from commondevops v6.10.0 in the act image. A pins job satisfies the ruleset. AND-002 stays open and deferred. Dependabot registries are active.*
+*Last updated: 2026-11-24 — 1.12.0 adds android-jvm-fuzz and an optional maestro_flows input on the emulator job. AND-002 stays open and deferred.*

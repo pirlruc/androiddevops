@@ -49,6 +49,16 @@ on:
         required: false
         type: string
         default: "1"
+      maestro_flows:
+        description: Relative directory of Maestro flows. Empty skips Maestro. Use this on a schedule, not on every pull request.
+        required: false
+        type: string
+        default: ""
+      maestro_image:
+        description: android-maestro image pinned by digest
+        required: false
+        type: string
+        default: ghcr.io/pirlruc/android-maestro@sha256:aba49b8d5f8d87c291a6e6c59b9163d071ade024f85de61e87be1c9869b030da
     secrets:
       checkout_token:
         description: contents:read on androiddevops when that repo is private
@@ -141,6 +151,8 @@ jobs:
         env:
           BOOT_TIMEOUT_SECONDS: ${{ inputs.boot_timeout_seconds }}
           CALLER_SCRIPT: ${{ inputs.script }}
+          MAESTRO_FLOWS: ${{ inputs.maestro_flows }}
+          MAESTRO_IMAGE: ${{ inputs.maestro_image }}
         with:
           api-level: ${{ inputs.api_level }}
           target: ${{ inputs.target }}
@@ -158,6 +170,8 @@ jobs:
         env:
           BOOT_TIMEOUT_SECONDS: ${{ inputs.boot_timeout_seconds }}
           CALLER_SCRIPT: ${{ inputs.script }}
+          MAESTRO_FLOWS: ${{ inputs.maestro_flows }}
+          MAESTRO_IMAGE: ${{ inputs.maestro_image }}
         with:
           api-level: ${{ inputs.api_level }}
           target: ${{ inputs.target }}
