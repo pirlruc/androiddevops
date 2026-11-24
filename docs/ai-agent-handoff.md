@@ -43,8 +43,8 @@ today and has the same limit once it is private. Pass
 `COMMONDEVOPS_READ_TOKEN` when that happens. `github.token` is the fallback
 while commondevops is public.
 
-`docs/guardrail-deviations.yml` records CI-032 and SC-SIGN-001. The repo is
-public, so the old Free-plan rationale is gone. REL-PUB-004 is retired:
+`docs/guardrail-deviations.yml` records SC-SIGN-001 and DOCKER-SEC-001.
+CI-032 is retired. The repo is public. REL-PUB-004 is retired:
 callers pass `environment` and this repo has no publish token. None of the
 remaining entries lower a number. Dependabot
 `registries: github-private` stays commented until `DEPENDABOT_GITHUB_TOKEN`

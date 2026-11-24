@@ -3,7 +3,7 @@
 Reusable GitHub Actions workflows for Android builds, scans, emulator tests, and signed APKs.
 
 Pin every `uses:` to a **commit SHA**. Pass that same SHA as `scripts_ref`.
-A private caller also passes `checkout_token`. The current tag is **1.8.0**. The next release is 1.9.0.
+A private caller also passes `checkout_token`. The current tag is **1.10.0**.
 Use the commit that tag points at:
 
 ```yaml

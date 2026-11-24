@@ -77,8 +77,7 @@ updates:
     registries:
       - github-private
     ignore:
-      # KT-BUILD-001. Temurin 21 stays. 22, 23, and 24 are not LTS.
-      # 25 is LTS and waits on a local Maestro image test.
+      # KT-BUILD-001. The image is Temurin 25. 22, 23, and 24 are not LTS.
       - dependency-name: "eclipse-temurin"
         versions: ["22", "23", "24"]
 

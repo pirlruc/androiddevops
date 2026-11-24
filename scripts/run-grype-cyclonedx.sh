@@ -15,7 +15,7 @@ GRYPE="${WORKDIR}/grype"
 ARCHIVE="${WORKDIR}/grype.tgz"
 
 if [[ ! -x $GRYPE ]]; then
-	curl -fsSL -o "$ARCHIVE" \
+	curl -fsSL --retry 5 --retry-delay 2 -o "$ARCHIVE" \
 		"https://github.com/anchore/grype/releases/download/v${VERSION}/grype_${VERSION}_linux_amd64.tar.gz"
 	echo "${SHA256}  ${ARCHIVE}" | sha256sum -c -
 	tar -xzf "$ARCHIVE" -C "$WORKDIR" grype
