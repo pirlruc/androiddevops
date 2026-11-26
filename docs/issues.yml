@@ -494,3 +494,32 @@ milestones:
                 - .github/workflows/android-apk-sbom.yml
             verification:
               - rg -n COMMONDEVOPS_SCRIPTS .github/workflows/android-release-apk.yml .github/workflows/android-apk-sbom.yml
+      - id: AND-PIN-001
+        status: open
+        title: Pin commondevops v6.12.0
+        overview:
+          problem: Bill jobs and self-CI still pin older commondevops tags.
+          goal: Every commondevops pin in this repo is v6.12.0.
+        decision: >-
+          In the context of reusable Android workflows, facing a newer
+          commondevops tag that adds CodeQL, we decided to move every
+          commondevops pin to v6.12.0, to achieve one helper revision,
+          accepting a release for a pin-only change.
+        acceptance_criteria:
+          - android-release-apk.yml and android-apk-sbom.yml pin v6.12.0
+          - self-CI and the Maestro digest job pin v6.12.0
+        guardrail_refs:
+          - CI-018
+        tasks:
+          - id: AND-PIN-001-T1
+            status: open
+            title: Move the commondevops pins
+            instructions:
+              files:
+                - .github/workflows/android-release-apk.yml
+                - .github/workflows/android-apk-sbom.yml
+                - .github/workflows/devops-ci.yml
+                - .github/workflows/security.yml
+                - .github/workflows/android-maestro-image.yml
+            verification:
+              - rg -n "ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0" .github/workflows
