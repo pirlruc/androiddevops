@@ -22,9 +22,9 @@ jobs:
       actions: read
       security-events: write
       id-token: write
-    uses: pirlruc/commondevops/.github/workflows/ops-repo-ci.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
+    uses: pirlruc/commondevops/.github/workflows/ops-repo-ci.yml@ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
     with:
-      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      scripts_ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
       shell_scripts: scripts/*.sh
       # ci-lint 6.8.0 and the previous digest have no gzip, so checkout cannot unpack.
       container_image: ghcr.io/catthehacker/ubuntu:act-24.04@sha256:dff4ec57d90046a7283aafc314298380be82bfeccb9ad0f1b36c4ebe74aabe78
@@ -48,7 +48,7 @@ jobs:
   docs:
     permissions:
       contents: read
-    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f
+    uses: pirlruc/commondevops/.github/workflows/common-doc-verify.yml@ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
     with:
       blocking: true
       shell_scripts: scripts/*.sh
@@ -58,17 +58,17 @@ jobs:
       yaml_files: docs/issues.yml docs/guardrail-deviations.yml docs/issues-sync-targets.yml
       yaml_globs: .github/workflows/*.yml
       run_link_lint: true
-      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      scripts_ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
 
   scaffold:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       issues: read
-    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@a2af891c6d05fe2790bc5ddf761252c95185ce5f
+    uses: pirlruc/commondevops/.github/workflows/common-scaffold-verify.yml@ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
     with:
       blocking: true
-      scripts_ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f
+      scripts_ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
     secrets:
       packs_token: ${{ secrets.GUARDRAILS_READ_TOKEN }}
 
@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: pirlruc/commondevops
-          ref: a2af891c6d05fe2790bc5ddf761252c95185ce5f # v6.10.0
+          ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
           persist-credentials: false
           path: .commondevops
           sparse-checkout: |

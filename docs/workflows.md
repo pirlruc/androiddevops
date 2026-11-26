@@ -126,7 +126,7 @@ The keystore file is removed when the step exits. A signed build must
 produce `app-release.apk`. Gradle dependency cache is off on this job.
 
 Pass that artifact name to
-[common-release](https://github.com/pirlruc/commondevops/blob/v6.10.0/.github/workflows/common-release.yml)
+[common-release](https://github.com/pirlruc/commondevops/blob/v6.12.0/.github/workflows/common-release.yml)
 `release_artifact` from a later job in the same run. common-release writes the
 `.sha256` files. The caller job cannot set `environment` on this workflow; the
 `environment` input is what selects it.

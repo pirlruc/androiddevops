@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: pirlruc/commondevops
-          ref: 9350e95cbb130219be113d8737469cd7c39f155c # v6.11.0
+          ref: ff65e7efbb7eea67bd659f886db0adb399f3a3f5 # v6.12.0
           token: ${{ secrets.checkout_token || github.token }}
           persist-credentials: false
           path: .commondevops

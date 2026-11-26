@@ -14,7 +14,7 @@
 | --- | --- |
 | guardrails | tag **1.17.1** → `8508e93691aa3c4f769ecc215ddc83ecf26e70b2` |
 | github-scaffold | tag **1.14.2** → `615dbbcbe906d62a29e4f4e4118cb94cb119f5a5` |
-| commondevops | v6.10.0 `a2af891c6d05fe2790bc5ddf761252c95185ce5f` |
+| commondevops | v6.12.0 `ff65e7efbb7eea67bd659f886db0adb399f3a3f5` |
 | containerdevops | tag **6.8.0** → `ae9dbee9e4537bd3a0b533de3bad011cb44b201e` |
 | ci-lint (Actions amd64) | `6.8.0` `sha256:3ed6d8dcbb08abf82e563630f2c1218cf0e8f33bb883ed46770e147113af48b0` |
 | osv-scanner | `2.6.0` `sha256:ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108` |
